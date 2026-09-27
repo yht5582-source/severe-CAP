@@ -226,6 +226,7 @@ function regimen(B){
   if(mrsa)out.push({cls:'add',nm:'＋ MRSA 涵蓋',role:c.mrsa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:['Vancomycin <b>15 mg/kg q12h</b>（依血中濃度調整）','Linezolid <b>600 mg q12h</b>'],note:'同時送痰或氣管內抽吸培養與 MRSA 鼻腔 PCR；培養與 PCR 陰性時 48 小時停藥（ATS/IDSA 2019）。'});
   if(psa)out.push({cls:'add',nm:'抗綠膿桿菌 β-lactam',role:c.psa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:c.blall?['Aztreonam <b>2 g q8h</b>']:['Piperacillin-tazobactam <b>4.5 g q6h</b>','Cefepime <b>2 g q8h</b>','Ceftazidime <b>2 g q8h</b>','Meropenem <b>1 g q8h</b>','Imipenem <b>500 mg q6h</b>','Aztreonam <b>2 g q8h</b>（β-lactam 過敏）'],note:'取代基本 β-lactam（仍合併 macrolide 或 fluoroquinolone）；送培養，培養陰性且病情改善時 48 小時降階（ATS/IDSA 2019）。'});
   if(c.flu)out.push({cls:'add',nm:'＋ 抗流感',role:'流感',opts:['Oseltamivir <b>75 mg q12h</b>，5 天（依腎功能調整）'],note:'不論發病多久都應給（ATS/IDSA 2019）；流感陽性仍需標準抗細菌治療。'});
+  const pi=out.findIndex(d=>d.nm==='抗綠膿桿菌 β-lactam');if(pi>0)out.unshift(out.splice(pi,1)[0]);
   return {out,mrsa,psa};
 }
 

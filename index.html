@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>重症社區型肺炎導航</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF1F0; --surface:#FFFFFF; --surface-2:#F5F8F7; --ink:#14212A; --muted:#55666D; --line:#D2DBDA;
+  --accent:#0B6E69; --accent-ink:#FFFFFF; --accent-soft:#DCEEEC;
+  --ok:#2A7549; --ok-soft:#E0F0E6; --warn:#9A5700; --warn-soft:#FAEBD3; --crit:#B42318; --crit-soft:#FBE2DE;
+  --strip:#12202A; --strip-ink:#E6EEF0; --strip-muted:#93A7AF; --strip-line:#2B3D47; --strip-accent:#43C4B8;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-label:"IBM Plex Sans Condensed","Noto Sans TC","Arial Narrow",sans-serif;
+  --f-num:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0B1114; --surface:#131C20; --surface-2:#182328; --ink:#E2EAEC; --muted:#93A4AA; --line:#26353B;
+    --accent:#3CBDB2; --accent-ink:#06201E; --accent-soft:#12332F;
+    --ok:#5CC48E; --ok-soft:#12301F; --warn:#F0AA45; --warn-soft:#352409; --crit:#F2685F; --crit-soft:#3A1512;
+    --strip:#070D10; --strip-ink:#E2EAEC; --strip-muted:#8397A0; --strip-line:#223139; --strip-accent:#43C4B8;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1114; --surface:#131C20; --surface-2:#182328; --ink:#E2EAEC; --muted:#93A4AA; --line:#26353B;
+  --accent:#3CBDB2; --accent-ink:#06201E; --accent-soft:#12332F;
+  --ok:#5CC48E; --ok-soft:#12301F; --warn:#F0AA45; --warn-soft:#352409; --crit:#F2685F; --crit-soft:#3A1512;
+  --strip:#070D10; --strip-ink:#E2EAEC; --strip-muted:#8397A0; --strip-line:#223139; --strip-accent:#43C4B8;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.3}
+p{margin:0}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:16px}
+.label{font-family:var(--f-label);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.strip{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--strip);color:var(--strip-ink);border-bottom:1px solid var(--strip-line)}
+.top{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between;padding-block:10px 8px}
+.brand h1{font-family:var(--f-label);font-size:20px;font-weight:700}
+.brand p{font-size:12px;color:var(--strip-muted)}
+.dx{display:flex;gap:6px;flex-wrap:wrap}
+.dxchip{border:1px solid var(--strip-line);border-radius:999px;padding:2px 10px;font-size:13px}
+.dxchip.crit{border-color:#F2685F;color:#FFB4AE}.dxchip.ok{border-color:#5CC48E;color:#B6EBCD}.dxchip.warn{border-color:#F0AA45;color:#FFD9A0}
+.beds-scroll{overflow-x:auto;padding-bottom:10px;color-scheme:dark}
+.beds{display:flex;gap:6px;width:max-content;min-width:100%}
+.bedbtn{display:grid;justify-items:center;gap:2px;min-width:56px;padding:4px 6px 5px;border-radius:8px;border:1px solid var(--strip-line);background:transparent;color:var(--strip-ink);cursor:pointer;font-family:var(--f-num);font-weight:700;font-size:15px}
+.bedbtn small{font-family:var(--f-body);font-weight:500;font-size:10.5px;color:var(--strip-muted);white-space:nowrap}
+.bedbtn[aria-current="true"]{background:var(--strip-ink);color:var(--strip);border-color:var(--strip-ink)}
+.bedbtn[aria-current="true"] small{color:var(--strip)}
+.bedbtn.s-crit{border-color:#F2685F}.bedbtn.s-ok{border-color:#5CC48E}
+main{padding-block:18px 48px;display:grid;gap:18px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}}
+.col{display:grid;gap:16px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px;min-width:0}
+.sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec h2{font-size:18px;font-weight:700;display:flex;gap:10px;align-items:center}
+.sec h2 .n{font-family:var(--f-num);font-size:13px;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:var(--ink);color:var(--surface)}
+.sec span{font-size:12px;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:500;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.small{padding:4px 10px;font-size:13px}
+.btn.danger{border-color:var(--crit);color:var(--crit)}
+.toast{font-size:13px;color:var(--ok)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.muted{color:var(--muted);font-size:13px}
+.sub{font-family:var(--f-label);font-size:12.5px;font-weight:600;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+.fld{display:grid;gap:3px;min-width:0}
+.fld label{font-size:12.5px;color:var(--muted)}
+.fld input{width:100%;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:6px 9px;font-family:var(--f-num)}
+.unit{font-size:10.5px;color:var(--muted);font-family:var(--f-num)}
+
+/* criteria */
+.crit{display:grid;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ci{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 14px;border-top:1px solid var(--line);background:var(--surface)}
+.ci:first-child{border-top:0}
+.ci .mk{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:13px;border:1px solid var(--line);color:var(--muted)}
+.ci.on{background:var(--crit-soft)}
+.ci.on .mk{background:var(--crit);border-color:var(--crit);color:var(--surface)}
+.ci .t{font-size:14.5px}
+.ci .t small{display:block;color:var(--muted);font-size:12.5px}
+.ci input[type="checkbox"]{width:18px;height:18px;accent-color:var(--crit)}
+.ci .in{display:flex;gap:6px;align-items:center}
+.ci .in input{width:84px;border:1px solid var(--line);background:var(--surface-2);border-radius:7px;padding:5px 8px;font-family:var(--f-num)}
+.ci .auto{font-size:11px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 4px}
+.verdict{border-radius:12px;padding:12px 16px;display:grid;gap:4px}
+.verdict.crit{background:var(--crit-soft)}.verdict.ok{background:var(--ok-soft)}.verdict.none{background:var(--surface-2);border:1px solid var(--line)}.verdict.warn{background:var(--warn-soft)}
+.verdict b{font-size:17px}
+.verdict span{font-size:14px}
+.score{display:flex;gap:8px;flex-wrap:wrap}
+.score span{font-family:var(--f-num);font-size:13px;border:1px solid var(--line);border-radius:6px;padding:2px 8px;background:var(--surface)}
+.cks{display:grid;gap:0;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.ck{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:8px;cursor:pointer;font-size:14.5px}
+.ck:hover{background:var(--surface-2)}
+.ck input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);flex:none}
+.ck small{display:block;color:var(--muted);font-size:12.5px}
+.ck:has(input:checked){background:var(--accent-soft)}
+.ck.risk input{accent-color:var(--crit)}
+.ck.risk:has(input:checked){background:var(--crit-soft)}
+.rx{display:grid;gap:8px}
+.drug{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface-2);align-items:baseline}
+.drug.core{border-color:var(--accent);background:var(--accent-soft)}
+.drug.add{border-color:var(--crit)}
+.drug .nm{font-weight:700;font-size:15px}
+.drug .role{font-size:12px;font-weight:600;border-radius:999px;padding:1px 9px;background:var(--surface);border:1px solid var(--line);white-space:nowrap}
+.drug .opts{grid-column:1/-1;font-size:14px;display:grid;gap:2px}
+.drug .opts b{font-family:var(--f-num);font-weight:700}
+.drug .opts small{color:var(--muted)}
+.gl{display:grid;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gl div{display:grid;grid-template-columns:150px 1fr;gap:10px;padding:8px 12px;border-top:1px solid var(--line);font-size:14px}
+.gl div:first-child{border-top:0}
+.gl b{font-family:var(--f-label);font-weight:600}
+.gl .yes{background:var(--ok-soft)}.gl .no{background:var(--surface-2)}
+@media (max-width:560px){.gl div{grid-template-columns:1fr}}
+.note{font-size:14px;border-radius:8px;padding:9px 12px;background:var(--surface-2);border:1px solid var(--line)}
+.note ul{margin:4px 0 0;padding-left:18px;display:grid;gap:3px}
+.rox{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;align-items:end}
+.roxv{font-family:var(--f-num);font-size:22px;font-weight:700}
+.side{display:grid;gap:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 118px)}
+@media (max-width:1000px){.side{position:static}}
+.side h2{font-size:16px;font-weight:700}
+.sum{display:grid;gap:5px;font-size:14px}
+textarea.buf{width:100%;height:130px;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px;font-family:var(--f-num);font-size:12.5px}
+.confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--crit);flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:10px;font-size:13px;color:var(--muted)}
+footer ol{margin:0;padding-left:20px;display:grid;gap:3px}
+.disclaimer{background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:13.5px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="strip">
+  <div class="wrap top">
+    <div class="brand"><h1>重症社區型肺炎導航</h1><p>ATS/IDSA 2019 · ERS/ESICM/ESCMID/ALAT 2023 · ATS 2025 更新</p></div>
+    <div class="dx" id="dx"></div>
+  </div>
+  <div class="wrap"><div class="beds-scroll"><div class="beds" id="beds"></div></div></div>
+</header>
+
+<div class="wrap">
+<main>
+  <div class="layout"><div class="col" id="main"></div><aside class="side" id="side"></aside></div>
+  <footer>
+    <div class="disclaimer"><b>僅供臨床流程輔助與教學，不取代臨床判斷。</b>抗生素選擇請依院內抗生素敏感性資料（antibiogram）與感染科建議；劑量為腎功能正常時的成人劑量，需依腎功能調整。資料只存在這台裝置的瀏覽器，不會上傳；請只記錄床號。</div>
+    <div>
+      <span class="label">依據</span>
+      <ol>
+        <li>Metlay JP, Waterer GW, Long AC, et al. Diagnosis and treatment of adults with community-acquired pneumonia. An official clinical practice guideline of the ATS and IDSA. <i>Am J Respir Crit Care Med</i> 2019;200:e45–e67（重症判定沿用 IDSA/ATS 2007 標準）。</li>
+        <li>Martin-Loeches I, Torres A, Nagavci B, et al. ERS/ESICM/ESCMID/ALAT guidelines for the management of severe community-acquired pneumonia. <i>Intensive Care Med</i> 2023;49:615–632；<i>Eur Respir J</i> 2023;61:2200735。</li>
+        <li>Jones BE, Ramirez JA, Oren E, et al. Diagnosis and management of community-acquired pneumonia: an official ATS clinical practice guideline. <i>Am J Respir Crit Care Med</i> 2025;212:24（類固醇與療程更新）。</li>
+        <li>Chaudhuri D, et al. 2024 focused update: guidelines on use of corticosteroids in sepsis, ARDS, and CAP. <i>Crit Care Med</i> 2024。</li>
+        <li>Dequin PF, et al. Hydrocortisone in severe community-acquired pneumonia (CAPE COD). <i>N Engl J Med</i> 2023;388:1931–1941。</li>
+        <li>Roca O, et al. ROX index to predict HFNC outcome. <i>Am J Respir Crit Care Med</i> 2019;199:1368–1376。</li>
+      </ol>
+    </div>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){
+const KEY='scap-v1';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const n=v=>{if(v===''||v==null)return NaN;const x=parseFloat(v);return isFinite(x)?x:NaN;};
+const newBed=()=>({v:{},c:{},note:''});
+const defS=()=>({beds:Array.from({length:12},(_,i)=>String(i+1)),bed:'1',data:{}});
+let S;
+try{S=Object.assign(defS(),JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){S=defS();}
+if(!Array.isArray(S.beds)||!S.beds.length)S.beds=defS().beds;
+if(!S.beds.includes(S.bed))S.bed=S.beds[0];
+if(!S.data||typeof S.data!=='object')S.data={};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const B_=()=>S.data[S.bed]||(S.data[S.bed]=newBed());
+
+/* ---------- 重症判定 ---------- */
+const MAJOR=[['shock','敗血性休克，需要升壓劑'],['mv','呼吸衰竭，需要侵襲性呼吸器']];
+// 次要條件：k, 名稱, 說明, 自動判斷函式（無輸入時回傳 null）
+const MINOR=[
+ ['rr','呼吸速率 ≥30 次/分','',B=>{const x=n(B.v.rr);return isFinite(x)?x>=30:null;},'rr','次/分'],
+ ['pf','PaO₂/FiO₂ ≤250','由 PaO₂ 與 FiO₂ 自動計算',B=>{const r=pf(B);return isFinite(r)?r<=250:null;},null],
+ ['multi','多葉浸潤','',null,null],
+ ['conf','意識混亂或定向感障礙','',null,null],
+ ['bun','尿毒：BUN ≥20 mg/dL','',B=>{const x=n(B.v.bun);return isFinite(x)?x>=20:null;},'bun','mg/dL'],
+ ['wbc','白血球減少 <4,000/µL','僅限感染造成者',B=>{const x=n(B.v.wbc);return isFinite(x)?x<4000:null;},'wbc','/µL'],
+ ['plt','血小板減少 <100,000/µL','',B=>{const x=n(B.v.plt);return isFinite(x)?x<100000:null;},'plt','/µL'],
+ ['temp','低體溫：核心體溫 <36 °C','',B=>{const x=n(B.v.temp);return isFinite(x)?x<36:null;},'temp','°C'],
+ ['hypo','低血壓需要積極輸液復甦','',null,null]];
+function pf(B){let f=n(B.v.fio2);if(f>1)f=f/100;const p=n(B.v.pao2);return f>0&&p>0?p/f:NaN;}
+function minorOn(B,m){const a=m[3]?m[3](B):null;return a===null?!!B.c['mi_'+m[0]]:a;}
+function sev(B){
+  const maj=MAJOR.filter(([k])=>B.c['ma_'+k]).length;
+  const min=MINOR.filter(m=>minorOn(B,m)).length;
+  return {maj,min,severe:maj>=1||min>=3};
+}
+
+/* ---------- 抗生素 ---------- */
+const RISK=[
+ ['mrsa_prior','MRSA','過去呼吸道檢體曾培養出 MRSA'],
+ ['mrsa_hosp','MRSA','90 天內住院並使用靜脈抗生素（且符合當地驗證的危險因子）'],
+ ['psa_prior','PsA','過去呼吸道檢體曾培養出 Pseudomonas aeruginosa'],
+ ['psa_hosp','PsA','90 天內住院並使用靜脈抗生素（且符合當地驗證的危險因子）']];
+const OTHER=[['blall','β-lactam 嚴重過敏'],['macroci','Macrolide 禁忌（例如 QT 延長）'],['flu','流感陽性（或流行季節高度懷疑）'],['abscess','肺膿瘍或膿胸']];
+function regimen(B){
+  const c=B.c,mrsa=c.mrsa_prior||c.mrsa_hosp,psa=c.psa_prior||c.psa_hosp;
+  const out=[];
+  if(!c.blall){
+    out.push({cls:'core',nm:'β-lactam',role:'基本',opts:[psa?'':'Ceftriaxone <b>1–2 g q24h</b>（重症常用 2 g）',psa?'':'Cefotaxime <b>1–2 g q8h</b>',psa?'':'Ampicillin-sulbactam <b>1.5–3 g q6h</b>',psa?'':'Ceftaroline <b>600 mg q12h</b>'].filter(Boolean),
+      note:psa?'有 Pseudomonas 風險：改用下方抗綠膿桿菌 β-lactam 取代。':''});
+    if(!c.macroci)out.push({cls:'core',nm:'＋ Macrolide',role:'基本',opts:['Azithromycin <b>500 mg q24h</b>','Clarithromycin <b>500 mg q12h</b>'],note:'ATS/IDSA 2019：β-lactam＋macrolide（強建議，中度證據）；ERS 2023：加 macrolide，不用 fluoroquinolone（條件式）。'});
+    else out.push({cls:'core',nm:'＋ 呼吸道 fluoroquinolone',role:'替代',opts:['Levofloxacin <b>750 mg q24h</b>','Moxifloxacin <b>400 mg q24h</b>'],note:'Macrolide 禁忌時，ATS/IDSA 2019 可用 β-lactam＋呼吸道 fluoroquinolone（強建議，低證據）。'});
+  }else{
+    out.push({cls:'core',nm:'呼吸道 fluoroquinolone',role:'β-lactam 過敏',opts:['Levofloxacin <b>750 mg q24h</b>','Moxifloxacin <b>400 mg q24h</b>'],note:psa?'有 Pseudomonas 風險：加 aztreonam 2 g q8h（見下方）。':'重症病人仍建議合併治療；依過敏史與感染科討論。'});
+  }
+  if(mrsa)out.push({cls:'add',nm:'＋ MRSA 涵蓋',role:c.mrsa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:['Vancomycin <b>15 mg/kg q12h</b>（依血中濃度調整）','Linezolid <b>600 mg q12h</b>'],note:'同時送痰或氣管內抽吸培養與 MRSA 鼻腔 PCR；培養與 PCR 陰性時 48 小時停藥（ATS/IDSA 2019）。'});
+  if(psa)out.push({cls:'add',nm:'抗綠膿桿菌 β-lactam',role:c.psa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:c.blall?['Aztreonam <b>2 g q8h</b>']:['Piperacillin-tazobactam <b>4.5 g q6h</b>','Cefepime <b>2 g q8h</b>','Ceftazidime <b>2 g q8h</b>','Meropenem <b>1 g q8h</b>','Imipenem <b>500 mg q6h</b>','Aztreonam <b>2 g q8h</b>（β-lactam 過敏）'],note:'取代基本 β-lactam；送培養，培養陰性且病情改善時 48 小時降階（ATS/IDSA 2019）。'});
+  if(c.flu)out.push({cls:'add',nm:'＋ 抗流感',role:'流感',opts:['Oseltamivir <b>75 mg q12h</b>，5 天（依腎功能調整）'],note:'不論發病多久都應給（ATS/IDSA 2019）；流感陽性仍需標準抗細菌治療。'});
+  return {out,mrsa,psa};
+}
+
+/* ---------- 類固醇 ---------- */
+function steroid(B){
+  const c=B.c,s=sev(B);
+  const shock=c.ma_shock,flu=c.flu,contra=c.st_asp||c.st_dm||c.st_gi;
+  return [
+    ['ATS/IDSA 2019','不建議常規使用；難治性敗血性休克依 Surviving Sepsis Campaign 處理。',shock],
+    ['ERS/ESICM 2023','有休克時建議使用類固醇（條件式，低證據）。',shock],
+    ['SCCM 2024','住院的重症細菌性 CAP 建議使用類固醇（強建議，中度證據）。',s.severe&&!flu],
+    ['ATS 2025','住院的重症 CAP 建議使用全身性類固醇（條件式，低證據）；流感肺炎除外，另排除麴菌感染、未控制的糖尿病、近期腸胃道出血。',s.severe&&!flu&&!contra]];
+}
+
+/* ---------- 渲染 ---------- */
+function renderBeds(){
+  $('#beds').innerHTML=S.beds.map(b=>{const B=S.data[b];let cls='',lab='—';
+    if(B&&(Object.keys(B.c).length||Object.keys(B.v).length)){const s=sev(B);cls=s.severe?'s-crit':'s-ok';lab=s.severe?'重症':'非重症';}
+    return `<button type="button" class="bedbtn ${cls}" data-bed="${esc(b)}" aria-current="${b===S.bed}">${esc(b)}<small>${lab}</small></button>`;}).join('');
+}
+function fld(B,k,l,u,ph){return `<div class="fld"><label for="v-${k}">${l} <span class="unit">${u}</span></label><input id="v-${k}" data-v="${k}" inputmode="decimal" value="${esc(B.v[k]??'')}" placeholder="${ph||''}"></div>`;}
+function ck(B,k,l,sub,cls){const id='c-'+k;return `<label class="ck ${cls||''}" for="${id}"><input type="checkbox" id="${id}" data-c="${k}" ${B.c[k]?'checked':''}><span>${l}${sub?`<small>${sub}</small>`:''}</span></label>`;}
+function render(){
+  const a=document.activeElement;let fk=null,sel=null;
+  if(a&&a.id){fk='#'+CSS.escape(a.id);try{sel=[a.selectionStart,a.selectionEnd];}catch(e){}}
+  const B=B_(),s=sev(B),rg=regimen(B),r=pf(B);
+  renderBeds();
+  $('#dx').innerHTML=`<span class="dxchip ${s.severe?'crit':'ok'}">${s.severe?'重症 CAP':'未達重症'}</span><span class="dxchip">主要 ${s.maj}／次要 ${s.min}</span>`;
+  let h=`<section class="panel"><div class="sec"><h2><span class="n">1</span>重症判定</h2><span>ATS/IDSA 2019（沿用 IDSA/ATS 2007）：1 項主要或 ≥3 項次要</span></div>
+    <div class="row">${fld(B,'pao2','PaO₂','mmHg','60')}${fld(B,'fio2','FiO₂','0.21–1 或 %','0.4')}<div class="fld"><label>PaO₂/FiO₂</label><div class="num" style="padding:6px 0;font-weight:700">${isFinite(r)?Math.round(r):'—'}</div></div></div>
+    <span class="sub">主要條件</span>
+    <div class="crit">${MAJOR.map(([k,l])=>`<label class="ci ${B.c['ma_'+k]?'on':''}" for="c-ma_${k}"><span class="mk">主</span><span class="t">${l}</span><input type="checkbox" id="c-ma_${k}" data-c="ma_${k}" ${B.c['ma_'+k]?'checked':''}></label>`).join('')}</div>
+    <span class="sub">次要條件</span>
+    <div class="crit">${MINOR.map((m,i)=>{const on=minorOn(B,m),auto=m[3]&&m[3](B)!==null;
+      const ctrl=m[4]?`<span class="in"><input id="v-${m[4]}" data-v="${m[4]}" inputmode="decimal" value="${esc(B.v[m[4]]??'')}" aria-label="${m[1]}"><span class="unit">${m[5]}</span></span>`:m[0]==='pf'?`<span class="num">${isFinite(r)?Math.round(r):'—'}</span>`:`<input type="checkbox" id="c-mi_${m[0]}" data-c="mi_${m[0]}" ${B.c['mi_'+m[0]]?'checked':''} aria-label="${m[1]}">`;
+      return `<div class="ci ${on?'on':''}"><span class="mk">${i+1}</span><span class="t">${m[1]}${auto?' <span class="auto">自動</span>':''}${m[2]?`<small>${m[2]}</small>`:''}</span>${ctrl}</div>`;}).join('')}</div>
+    <div class="verdict ${s.severe?'crit':'none'}"><b>${s.severe?'符合重症 CAP':'未達重症標準'}</b><span>${s.maj?'符合主要條件：收治加護病房。':s.min>=3?`次要條件 ${s.min} 項（≥3）：建議收治加護病房或較高照護等級。`:`主要 0 項、次要 ${s.min} 項。持續監測，病況變化時重新評估。`}</span></div>
+  </section>`;
+
+  h+=`<section class="panel"><div class="sec"><h2><span class="n">2</span>診斷檢查</h2><span>重症 CAP 建議在給抗生素前完成</span></div>
+    <div class="cks">${ck(B,'dx_bc','血液培養（抗生素前）','ATS/IDSA 2019：重症必做')}${ck(B,'dx_sp','痰液或氣管內抽吸培養與革蘭氏染色','ATS/IDSA 2019：重症必做')}
+    ${ck(B,'dx_uag','尿液肺炎鏈球菌與退伍軍人菌抗原','ATS/IDSA 2019：重症建議')}${ck(B,'dx_flu','流感核酸檢測（流行期間）','')}
+    ${ck(B,'dx_pcr','下呼吸道檢體多重 PCR','ERS 2023：考慮非標準抗生素時建議（條件式）')}${ck(B,'dx_nares','MRSA 鼻腔 PCR','經驗性涵蓋 MRSA 時，陰性可協助停藥')}</div>
+    <div class="note">Procalcitonin：不可用來決定是否開始抗生素（ATS/IDSA 2019）；可用來縮短療程（ERS 2023，條件式）。</div></section>`;
+
+  h+=`<section class="panel"><div class="sec"><h2><span class="n">3</span>經驗性抗生素</h2><span>依抗藥菌風險調整；${s.severe?'重症':'非重症'}</span></div>
+    <span class="sub">抗藥菌風險</span><div class="cks">${RISK.map(([k,t,l])=>ck(B,k,`${t}：${l}`,'','risk')).join('')}</div>
+    ${!s.severe&&(B.c.mrsa_hosp||B.c.psa_hosp)?'<div class="note">非重症且只有「近期住院＋靜脈抗生素」：ATS/IDSA 2019 建議先送培養，結果陽性再加涵蓋，不需經驗性加藥。以下仍列出藥物供參考。</div>':''}
+    <span class="sub">其他狀況</span><div class="cks">${OTHER.map(([k,l])=>ck(B,k,l,'')).join('')}</div>
+    <div class="rx">${rg.out.map(d=>`<div class="drug ${d.cls}"><span class="nm">${d.nm}</span><span class="role">${d.role}</span><div class="opts">${d.opts.map(o=>`<span>${o}</span>`).join('')}${d.note?`<small>${d.note}</small>`:''}</div></div>`).join('')}</div>
+    <div class="note"><ul><li>疑似吸入性肺炎：使用標準 CAP 治療，不常規加抗厭氧菌藥物；${B.c.abscess?'<b>本例有肺膿瘍或膿胸，需涵蓋厭氧菌。</b>':'只有肺膿瘍或膿胸才需涵蓋厭氧菌。'}（ATS/IDSA 2019；ERS 2023 良好臨床實務）</li>
+    <li>劑量為腎功能正常時的成人劑量；請依腎功能與院內 antibiogram 調整。</li></ul></div></section>`;
+
+  const st=steroid(B);
+  h+=`<section class="panel"><div class="sec"><h2><span class="n">4</span>類固醇</h2><span>各指引建議不同，依目前勾選自動判斷是否適用</span></div>
+    <div class="cks">${ck(B,'st_asp','懷疑或確診麴菌感染','')}${ck(B,'st_dm','未控制的糖尿病','')}${ck(B,'st_gi','近期腸胃道出血','')}</div>
+    <div class="gl">${st.map(([g,t,y])=>`<div class="${y?'yes':'no'}"><b>${g}</b><span>${t}<br><small class="muted">${y?'✓ 本例適用':'本例目前不適用'}</small></span></div>`).join('')}</div>
+    <div class="note">常用處方（CAPE COD 試驗）：hydrocortisone <b class="num">200 mg/天</b>，於符合重症後 24 小時內開始，連用 4 天（改善者）或 7 天，之後逐步減量，總療程 8 或 14 天。流感肺炎不使用。</div></section>`;
+
+  const rr=n(B.v.rr),sp=n(B.v.spo2);let fi=n(B.v.fio2);if(fi>1)fi=fi/100;
+  const rox=sp>0&&fi>0&&rr>0?(sp/fi)/rr:NaN;
+  h+=`<section class="panel"><div class="sec"><h2><span class="n">5</span>氧氣與呼吸支持</h2><span>ERS/ESICM 2023</span></div>
+    <div class="note"><ul><li>急性低血氧、尚不需立即插管：建議 <b>HFNO</b> 優於傳統氧氣（條件式，極低證據）。</li>
+    <li>持續低血氧、仍不需立即插管：部分病人可考慮 <b>NIV</b>（條件式，低證據）。</li>
+    <li>密切監測，治療失敗時不要延誤插管。</li></ul></div>
+    <div class="rox">${fld(B,'spo2','SpO₂','%','92')}<div class="fld"><label>FiO₂（同上）</label><div class="num" style="padding:6px 0">${isFinite(fi)?fi.toFixed(2):'—'}</div></div><div class="fld"><label>RR（同上）</label><div class="num" style="padding:6px 0">${isFinite(rr)?rr:'—'}</div></div>
+    <div class="fld"><label>ROX 指數</label><span class="roxv" style="color:${!isFinite(rox)?'inherit':rox>=4.88?'var(--ok)':rox<3.85?'var(--crit)':'var(--warn)'}">${isFinite(rox)?rox.toFixed(2):'—'}</span></div></div>
+    <p class="muted">ROX =（SpO₂／FiO₂）÷ 呼吸速率，用於 HFNC 病人。≥4.88 預測 HFNC 成功；2、6、12 小時分別 &lt;2.85、&lt;3.47、&lt;3.85 預測失敗、需插管（Roca 2019）。</p></section>`;
+
+  h+=`<section class="panel"><div class="sec"><h2><span class="n">6</span>療程與降階</h2><span>ATS/IDSA 2019、ATS 2025、ERS 2023</span></div>
+    <span class="sub">臨床穩定條件</span>
+    <div class="cks">${[['cs_t','體溫 ≤37.8 °C'],['cs_hr','心率 ≤100 次/分'],['cs_rr','呼吸速率 ≤24 次/分'],['cs_bp','收縮壓 ≥90 mmHg'],['cs_o2','室內空氣 SpO₂ ≥90% 或 PaO₂ ≥60 mmHg'],['cs_po','可口服'],['cs_ms','意識正常']].map(([k,l])=>ck(B,k,l,'')).join('')}</div>
+    ${(()=>{const n7=['cs_t','cs_hr','cs_rr','cs_bp','cs_o2','cs_po','cs_ms'].filter(k=>B.c[k]).length;return `<div class="verdict ${n7===7?'ok':'none'}"><b>${n7===7?'已達臨床穩定':'尚未達臨床穩定（'+n7+'/7）'}</b><span>重症 CAP 達臨床穩定後，抗生素至少 5 天（ATS/IDSA 2019；ATS 2025：重症 ≥5 天）；可用 procalcitonin 協助縮短療程（ERS 2023）。MRSA 或 Pseudomonas 經驗性涵蓋，培養陰性時 48 小時停藥。</span></div>`;})()}
+  </section>
+  <section class="panel"><label class="label" for="note">備註</label><textarea id="note" data-note style="width:100%;min-height:64px;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px">${esc(B.note)}</textarea></section>`;
+  $('#main').innerHTML=h;
+
+  $('#side').innerHTML=`<section class="panel"><h2>床 ${esc(S.bed)} 摘要</h2><div class="sum">
+      <div><b>${s.severe?'重症 CAP':'未達重症'}</b>（主要 ${s.maj}、次要 ${s.min}）</div>
+      <div>抗藥菌：${rg.mrsa?'MRSA ':''}${rg.psa?'PsA':''}${!rg.mrsa&&!rg.psa?'無風險因子':''}</div>
+      <div>類固醇：${st.filter(x=>x[2]).map(x=>x[0]).join('、')||'各指引目前不適用'}</div></div>
+      <div class="row" style="align-items:center"><button type="button" class="btn small" data-act="copy">複製摘要</button><span class="toast" id="toast" aria-live="polite"></span></div>
+      <textarea class="buf" id="buf" hidden readonly aria-label="摘要"></textarea></section>
+    <section class="panel"><div class="row" style="align-items:center"><button type="button" class="btn small danger" data-act="clearAsk">清除此床</button><span class="confirm" id="clr" hidden>確定清除床 ${esc(S.bed)}？<button type="button" class="btn small danger" data-act="clearYes">清除</button><button type="button" class="btn small" data-act="clearNo">取消</button></span></div>
+      <details><summary style="cursor:pointer;font-weight:700">床號設定</summary><div class="fld" style="margin-top:8px"><label for="set-beds">床號（逗號或空白分隔）</label><input id="set-beds" value="${esc(S.beds.join(', '))}"></div><button type="button" class="btn small primary" style="margin-top:8px" data-act="saveBeds">儲存</button></details></section>`;
+  const el=fk&&$(fk);if(el){el.focus({preventScroll:true});if(sel&&sel[0]!=null)try{el.setSelectionRange(sel[0],sel[1]);}catch(e){}}
+}
+function summary(){
+  const B=B_(),s=sev(B),rg=regimen(B),st=steroid(B);
+  const L=[`【床 ${S.bed}】社區型肺炎評估`,`${s.severe?'符合重症 CAP':'未達重症'}：主要 ${s.maj} 項（${MAJOR.filter(([k])=>B.c['ma_'+k]).map(x=>x[1]).join('、')||'無'}）、次要 ${s.min} 項（${MINOR.filter(m=>minorOn(B,m)).map(m=>m[1]).join('、')||'無'}）`];
+  L.push('經驗性抗生素：'+rg.out.map(d=>d.nm.replace('＋ ','')+'（'+d.opts[0].replace(/<[^>]+>/g,'')+' 等）').join('＋'));
+  L.push('類固醇：'+(st.filter(x=>x[2]).map(x=>x[0]).join('、')||'目前各指引不適用'));
+  const dx=[['dx_bc','血培養'],['dx_sp','痰培養'],['dx_uag','尿抗原'],['dx_flu','流感檢測'],['dx_pcr','多重 PCR'],['dx_nares','MRSA 鼻腔 PCR']].filter(([k])=>B.c[k]).map(x=>x[1]);
+  L.push('已送檢查：'+(dx.join('、')||'無'));
+  if(B.note)L.push('備註：'+B.note);
+  return L.join('\n');
+}
+document.addEventListener('click',e=>{
+  const bb=e.target.closest('[data-bed]');if(bb){S.bed=bb.dataset.bed;save();render();return;}
+  const a=e.target.closest('[data-act]');if(!a)return;
+  switch(a.dataset.act){
+    case 'copy':{const text=summary(),toast=$('#toast'),buf=$('#buf');
+      const ok=()=>{toast.textContent='已複製';setTimeout(()=>{const t=$('#toast');if(t)t.textContent='';},2000);};
+      const fail=()=>{buf.value=text;buf.hidden=false;buf.select();toast.textContent='無法自動複製，請手動複製下方文字';};
+      try{navigator.clipboard.writeText(text).then(ok,fail);}catch(err){fail();}return;}
+    case 'clearAsk':$('#clr').hidden=false;a.hidden=true;return;
+    case 'clearNo':$('#clr').hidden=true;$('[data-act="clearAsk"]').hidden=false;return;
+    case 'clearYes':S.data[S.bed]=newBed();break;
+    case 'saveBeds':{const b=$('#set-beds').value.split(/[,，\s]+/).map(v=>v.trim()).filter(Boolean);if(b.length){S.beds=[...new Set(b)];if(!S.beds.includes(S.bed))S.bed=S.beds[0];}break;}
+    default:return;
+  }
+  save();render();
+});
+document.addEventListener('change',e=>{const t=e.target;if(!t.matches('[data-c]'))return;B_().c[t.dataset.c]=t.checked;save();render();});
+document.addEventListener('input',e=>{const t=e.target;
+  if(t.matches('[data-v]')){B_().v[t.dataset.v]=t.value;save();render();}
+  else if(t.matches('[data-note]')){B_().note=t.value;save();}});
+render();
+})();
+</script>
+</body>
+</html>

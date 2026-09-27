@@ -217,15 +217,14 @@ function regimen(B){
   const c=B.c,mrsa=c.mrsa_prior||c.mrsa_hosp,psa=c.psa_prior||c.psa_hosp;
   const out=[];
   if(!c.blall){
-    out.push({cls:'core',nm:'β-lactam',role:'基本',opts:[psa?'':'Ceftriaxone <b>1–2 g q24h</b>（重症常用 2 g）',psa?'':'Cefotaxime <b>1–2 g q8h</b>',psa?'':'Ampicillin-sulbactam <b>1.5–3 g q6h</b>',psa?'':'Ceftaroline <b>600 mg q12h</b>'].filter(Boolean),
-      note:psa?'有 Pseudomonas 風險：改用下方抗綠膿桿菌 β-lactam 取代。':''});
+    if(!psa)out.push({cls:'core',nm:'β-lactam',role:'基本',opts:['Ceftriaxone <b>1–2 g q24h</b>（重症常用 2 g）','Cefotaxime <b>1–2 g q8h</b>','Ampicillin-sulbactam <b>1.5–3 g q6h</b>','Ceftaroline <b>600 mg q12h</b>'],note:''});
     if(!c.macroci)out.push({cls:'core',nm:'＋ Macrolide',role:'基本',opts:['Azithromycin <b>500 mg q24h</b>','Clarithromycin <b>500 mg q12h</b>'],note:'ATS/IDSA 2019：β-lactam＋macrolide（強建議，中度證據）；ERS 2023：加 macrolide，不用 fluoroquinolone（條件式）。'});
     else out.push({cls:'core',nm:'＋ 呼吸道 fluoroquinolone',role:'替代',opts:['Levofloxacin <b>750 mg q24h</b>','Moxifloxacin <b>400 mg q24h</b>'],note:'Macrolide 禁忌時，ATS/IDSA 2019 可用 β-lactam＋呼吸道 fluoroquinolone（強建議，低證據）。'});
   }else{
     out.push({cls:'core',nm:'呼吸道 fluoroquinolone',role:'β-lactam 過敏',opts:['Levofloxacin <b>750 mg q24h</b>','Moxifloxacin <b>400 mg q24h</b>'],note:psa?'有 Pseudomonas 風險：加 aztreonam 2 g q8h（見下方）。':'重症病人仍建議合併治療；依過敏史與感染科討論。'});
   }
   if(mrsa)out.push({cls:'add',nm:'＋ MRSA 涵蓋',role:c.mrsa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:['Vancomycin <b>15 mg/kg q12h</b>（依血中濃度調整）','Linezolid <b>600 mg q12h</b>'],note:'同時送痰或氣管內抽吸培養與 MRSA 鼻腔 PCR；培養與 PCR 陰性時 48 小時停藥（ATS/IDSA 2019）。'});
-  if(psa)out.push({cls:'add',nm:'抗綠膿桿菌 β-lactam',role:c.psa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:c.blall?['Aztreonam <b>2 g q8h</b>']:['Piperacillin-tazobactam <b>4.5 g q6h</b>','Cefepime <b>2 g q8h</b>','Ceftazidime <b>2 g q8h</b>','Meropenem <b>1 g q8h</b>','Imipenem <b>500 mg q6h</b>','Aztreonam <b>2 g q8h</b>（β-lactam 過敏）'],note:'取代基本 β-lactam；送培養，培養陰性且病情改善時 48 小時降階（ATS/IDSA 2019）。'});
+  if(psa)out.push({cls:'add',nm:'抗綠膿桿菌 β-lactam',role:c.psa_prior?'過去曾培養出':'近期住院＋靜脈抗生素',opts:c.blall?['Aztreonam <b>2 g q8h</b>']:['Piperacillin-tazobactam <b>4.5 g q6h</b>','Cefepime <b>2 g q8h</b>','Ceftazidime <b>2 g q8h</b>','Meropenem <b>1 g q8h</b>','Imipenem <b>500 mg q6h</b>','Aztreonam <b>2 g q8h</b>（β-lactam 過敏）'],note:'取代基本 β-lactam（仍合併 macrolide 或 fluoroquinolone）；送培養，培養陰性且病情改善時 48 小時降階（ATS/IDSA 2019）。'});
   if(c.flu)out.push({cls:'add',nm:'＋ 抗流感',role:'流感',opts:['Oseltamivir <b>75 mg q12h</b>，5 天（依腎功能調整）'],note:'不論發病多久都應給（ATS/IDSA 2019）；流感陽性仍需標準抗細菌治療。'});
   return {out,mrsa,psa};
 }
@@ -235,8 +234,8 @@ function steroid(B){
   const c=B.c,s=sev(B);
   const shock=c.ma_shock,flu=c.flu,contra=c.st_asp||c.st_dm||c.st_gi;
   return [
-    ['ATS/IDSA 2019','不建議常規使用；難治性敗血性休克依 Surviving Sepsis Campaign 處理。',shock],
-    ['ERS/ESICM 2023','有休克時建議使用類固醇（條件式，低證據）。',shock],
+    ['ATS/IDSA 2019','不建議常規使用，流感肺炎也不建議；難治性敗血性休克依 Surviving Sepsis Campaign 處理。',shock&&!flu],
+    ['ERS/ESICM 2023','有休克時建議使用類固醇（條件式，低證據）。流感肺炎使用前請審慎評估。',shock],
     ['SCCM 2024','住院的重症細菌性 CAP 建議使用類固醇（強建議，中度證據）。',s.severe&&!flu],
     ['ATS 2025','住院的重症 CAP 建議使用全身性類固醇（條件式，低證據）；流感肺炎除外，另排除麴菌感染、未控制的糖尿病、近期腸胃道出血。',s.severe&&!flu&&!contra]];
 }

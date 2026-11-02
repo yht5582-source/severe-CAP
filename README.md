@@ -20,6 +20,9 @@
 其他功能：
 - **床位列**：每床顯示重症或非重症。
 - **一鍵複製摘要**：可貼到病歷。
+- **示範病例**（`#cases`）：6 個虛構病例，可帶入決策工具；示範資料只在記憶體，不寫入床位。
+- **考題**（`#quiz`）：基礎 10 題、高階 10 題，附解析與依據；不儲存作答。
+- **心智圖**（`#map`）：評估與處置兩側，可展開收合。
 
 ## 各指引的類固醇建議
 
@@ -34,6 +37,8 @@
 
 直接用瀏覽器開啟 `index.html` 即可，不需安裝或建置。
 
+測試：`node tests.cjs`（核對工具判定與病例、考題內容一致）。
+
 ## 在地化設定
 
 | 項目 | 位置 |
@@ -42,6 +47,7 @@
 | 重症條件 | `<script>` 內 `MAJOR`、`MINOR` |
 | 抗藥菌風險與抗生素處方 | `RISK`、`regimen()` |
 | 類固醇建議 | `steroid()` |
+| 病例、考題、心智圖 | `SCASES`、`SQUIZ`、`SMAP` |
 
 ## 資料與隱私
 
@@ -56,6 +62,7 @@
 4. Chaudhuri D, et al. 2024 focused update: guidelines on use of corticosteroids in sepsis, ARDS, and community-acquired pneumonia. *Crit Care Med* 2024.
 5. Dequin PF, et al. Hydrocortisone in severe community-acquired pneumonia. *N Engl J Med* 2023;388:1931–1941.
 6. Roca O, et al. An index combining respiratory rate and oxygenation to predict outcome of nasal high-flow therapy. *Am J Respir Crit Care Med* 2019;199:1368–1376.
+7. REMAP-CAP Investigators. Effect of hydrocortisone on mortality in patients with severe community-acquired pneumonia. *Intensive Care Med* 2025;51:665–680.
 
 ## 授權
 

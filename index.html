@@ -127,7 +127,7 @@ main{padding-block:18px 48px;display:grid;gap:18px}
 .note ul{margin:4px 0 0;padding-left:18px;display:grid;gap:3px}
 .rox{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;align-items:end}
 .roxv{font-family:var(--f-num);font-size:22px;font-weight:700}
-.side{display:grid;gap:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 118px)}
+.side{display:grid;gap:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--strip-h,118px) + 12px)}
 @media (max-width:1000px){.side{position:static}}
 .side h2{font-size:16px;font-weight:700}
 .sum{display:grid;gap:5px;font-size:14px}
@@ -136,22 +136,149 @@ textarea.buf{width:100%;height:130px;border:1px solid var(--line);background:var
 footer{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:10px;font-size:13px;color:var(--muted)}
 footer ol{margin:0;padding-left:20px;display:grid;gap:3px}
 .disclaimer{background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:13.5px}
+/* tabs */
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}
+.tab{appearance:none;background:transparent;border:1px solid var(--strip-line);border-radius:8px;color:var(--strip-ink);padding:5px 12px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.tab:hover{border-color:var(--strip-accent)}
+.tab[aria-selected="true"]{background:var(--strip-accent);border-color:var(--strip-accent);color:#06201E;font-weight:700}
+.tab:focus-visible{outline-color:var(--strip-accent)}
+body:not([data-tab="tool"]) #dx,body:not([data-tab="tool"]) .beds-wrap{display:none}
+.pane{display:grid;gap:18px;min-width:0}
+.demo{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--warn-soft);border-radius:10px;padding:9px 14px;font-size:14px}
+@media (max-width:520px){.tab{padding:4px 9px;font-size:13px}body[data-tab="tool"] .brand{display:none}.qbar{position:static}}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+.sec-head h2{font-size:19px;font-weight:700}
+.sec-head .src{font-size:12px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{appearance:none;border:0;background:transparent;padding:3px 10px;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.pill{font-size:12.5px;border-radius:999px;padding:2px 10px;white-space:nowrap;background:var(--surface-2);border:1px solid var(--line)}
+.pill.warn{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.note.ok{background:var(--ok-soft);border-color:transparent}
+.note.warn{background:var(--warn-soft);border-color:transparent}
+
+/* cases */
+.lead{color:var(--muted);font-size:14px;max-width:80ch}
+.pick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:860px){.pick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.pick{grid-template-columns:minmax(0,1fr)}}
+.pick button{appearance:none;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;display:grid;gap:2px}
+.pick button span{font-weight:700;font-size:14.5px}
+.pick button small{color:var(--muted);font-size:12.5px}
+.pick button:hover{border-color:var(--accent)}
+.pick button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.case-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.case-head h3{font-size:17px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px}
+.tile{border:1px solid var(--line);border-radius:8px;padding:7px 11px;background:var(--surface-2);min-width:0}
+.tile .k{font-size:12px;color:var(--muted)}
+.tile .v{font-family:var(--f-num);font-size:19px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+.tile .v small{font-size:11.5px;font-weight:500;color:var(--muted);margin-left:3px}
+.tile.ok{border-color:var(--ok)}.tile.ok .v{color:var(--ok)}
+.tile.warn{border-color:transparent;background:var(--warn-soft)}.tile.warn .v{color:var(--warn)}
+.tile.stop{border-color:transparent;background:var(--crit-soft)}.tile.stop .v{color:var(--crit)}
+.csteps{margin:0;padding-left:22px;display:grid;gap:9px;font-size:14.5px}
+.csteps li b{display:block}
+.traps{margin:0;padding-left:20px;display:grid;gap:4px}
+.small-src{font-size:12.5px;color:var(--muted)}
+
+/* quiz */
+.qbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--strip-h,96px));z-index:5}
+.qlist{display:grid;gap:12px}
+.q{gap:8px}
+.q-top{display:flex;gap:8px;align-items:center}
+.q p{font-weight:500}
+.opts{display:grid;gap:6px}
+.opts button{appearance:none;text-align:left;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button:disabled{cursor:default;color:var(--ink)}
+.opts button.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts button.wrong{border-color:var(--crit);background:var(--crit-soft)}
+.q-x{display:grid;gap:3px}
+
+/* mind map */
+.mm-tools{display:flex;gap:8px;flex-wrap:wrap}
+.mm{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 112px minmax(0,1fr);column-gap:34px;align-items:start}
+#mm-links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#mm-links path{fill:none;stroke-width:2;opacity:.55}
+#mm-links path.ev{stroke:var(--accent)}#mm-links path.tx{stroke:var(--warn)}
+.mm-side{position:relative;min-width:0}
+.mm-center{position:relative;align-self:center;background:var(--strip);color:var(--strip-ink);border-radius:12px;padding:16px 8px;text-align:center;font-family:var(--f-label);font-weight:700;font-size:16px;line-height:1.3}
+.mm-col{margin-bottom:10px;font-size:16px}
+.mm-col.ev{color:var(--accent)}.mm-col.tx{color:var(--warn)}
+.mm-branch{margin-bottom:10px}
+.mm-head{appearance:none;display:grid;grid-template-columns:minmax(0,1fr) auto;width:100%;border:0;border-radius:8px;padding:8px 12px;text-align:left;line-height:1.35;cursor:pointer}
+.mm-branch.ev .mm-head{background:var(--accent);color:var(--accent-ink)}
+.mm-branch.tx .mm-head{background:var(--warn);color:var(--surface)}
+.mm-head::after{content:"＋";grid-column:2;grid-row:1/span 2;align-self:center;padding-left:10px}
+.mm-head[aria-expanded="true"]::after{content:"－"}
+.mm-head[aria-expanded="true"]{border-radius:8px 8px 0 0}
+.mm-t{font-weight:700;font-size:14.5px}
+.mm-s{font-size:12px;opacity:.9;grid-column:1}
+.mm-leaves{list-style:none;margin:0;padding:6px 12px;font-size:13.5px;border:1px solid var(--line);border-top:0;border-radius:0 0 8px 8px;background:var(--surface)}
+.mm-leaves li{padding:4px 0;border-bottom:1px dashed var(--line)}
+.mm-leaves li:last-child{border-bottom:0}
+@media (max-width:820px){.mm{grid-template-columns:minmax(0,1fr);row-gap:14px}#mm-links{display:none}.mm-center{order:-1;padding:10px}.mm-center br{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
-<body>
+<body data-tab="tool">
 
 <header class="strip">
   <div class="wrap top">
     <div class="brand"><h1>重症社區型肺炎導航</h1><p>ATS/IDSA 2019 · ERS/ESICM/ESCMID/ALAT 2023 · ATS 2025 更新</p></div>
     <div class="dx" id="dx"></div>
   </div>
-  <div class="wrap"><div class="beds-scroll"><div class="beds" id="beds"></div></div></div>
+  <div class="wrap">
+    <nav class="tabs" role="tablist" aria-label="功能分頁">
+      <button class="tab" type="button" role="tab" id="tab-tool" data-t="tool" aria-controls="tool">決策工具</button>
+      <button class="tab" type="button" role="tab" id="tab-cases" data-t="cases" aria-controls="cases">示範病例</button>
+      <button class="tab" type="button" role="tab" id="tab-quiz" data-t="quiz" aria-controls="quiz">考題</button>
+      <button class="tab" type="button" role="tab" id="tab-map" data-t="map" aria-controls="map">心智圖</button>
+    </nav>
+  </div>
+  <div class="wrap beds-wrap"><div class="beds-scroll"><div class="beds" id="beds"></div></div></div>
 </header>
 
 <div class="wrap">
 <main>
-  <div class="layout"><div class="col" id="main"></div><aside class="side" id="side"></aside></div>
+  <div class="pane" id="tool" role="tabpanel" aria-labelledby="tab-tool">
+    <div class="demo" id="demo" hidden><span id="demo-t"></span><button type="button" class="btn small" data-act="demoExit">結束示範，回到床位</button></div>
+    <div class="layout"><div class="col" id="main"></div><aside class="side" id="side"></aside></div>
+  </div>
+
+  <div class="pane" id="cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <div class="sec-head"><h2>示範病例</h2><span class="src">皆為虛構病例，判定結果由工具同一套邏輯算出</span></div>
+    <p class="lead">6 個病例各走一條不同的路。「帶入工具」會把數值載入決策工具並標示為示範資料，不會寫入或覆蓋任何床位。</p>
+    <div class="pick" id="c-pick"></div>
+    <div id="c-body"></div>
+  </div>
+
+  <div class="pane" id="quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="sec-head"><h2>考題</h2><span class="src">基礎 10 題、高階 10 題；不儲存作答</span></div>
+    <div class="panel qbar">
+      <div class="seg" id="x-set" role="group" aria-label="題組">
+        <button type="button" data-v="all">全部 20 題</button><button type="button" data-v="basic">基礎</button><button type="button" data-v="adv">高階</button>
+      </div>
+      <div id="x-score" aria-live="polite" style="font-size:14px"></div>
+      <button class="btn small" type="button" id="x-reset">重新作答</button>
+    </div>
+    <div class="qlist" id="x-list"></div>
+  </div>
+
+  <div class="pane" id="map" role="tabpanel" aria-labelledby="tab-map" hidden>
+    <div class="sec-head">
+      <h2>心智圖</h2>
+      <div class="mm-tools"><button class="btn small" type="button" id="mm-open">全部展開</button><button class="btn small" type="button" id="mm-close">全部收合</button></div>
+    </div>
+    <div class="mm" id="mm">
+      <svg id="mm-links" aria-hidden="true"></svg>
+      <div class="mm-side" id="mm-dx"></div>
+      <div class="mm-center" id="mm-center">重症<br>CAP</div>
+      <div class="mm-side" id="mm-tx"></div>
+    </div>
+  </div>
+
   <footer>
     <div class="disclaimer"><b>僅供臨床流程輔助與教學，不取代臨床判斷。</b>抗生素選擇請依院內抗生素敏感性資料（antibiogram）與感染科建議；劑量為腎功能正常時的成人劑量，需依腎功能調整。資料只存在這台裝置的瀏覽器，不會上傳；請只記錄床號。</div>
     <div>
@@ -163,6 +290,7 @@ footer ol{margin:0;padding-left:20px;display:grid;gap:3px}
         <li>Chaudhuri D, et al. 2024 focused update: guidelines on use of corticosteroids in sepsis, ARDS, and CAP. <i>Crit Care Med</i> 2024。</li>
         <li>Dequin PF, et al. Hydrocortisone in severe community-acquired pneumonia (CAPE COD). <i>N Engl J Med</i> 2023;388:1931–1941。</li>
         <li>Roca O, et al. ROX index to predict HFNC outcome. <i>Am J Respir Crit Care Med</i> 2019;199:1368–1376。</li>
+        <li>REMAP-CAP Investigators. Effect of hydrocortisone on mortality in patients with severe community-acquired pneumonia. <i>Intensive Care Med</i> 2025;51:665–680。</li>
       </ol>
     </div>
   </footer>
@@ -170,11 +298,157 @@ footer ol{margin:0;padding-left:20px;display:grid;gap:3px}
 </div>
 
 <script>
+/*CASES-START*/
+var SCASES=[
+{id:'c1',t:'剛好 3 項次要條件',s:'無主要條件，一樣是重症',tag:'次要條件累積・HFNO',rox:true,
+ who:'72 歲男性，發燒、咳嗽 3 天，右下葉單葉浸潤，意識清楚。使用 HFNO，FiO₂ 0.5 時 PaO₂ 70 mmHg、SpO₂ 92%。RR 32 次/分，BUN 28 mg/dL，血壓穩定，未用升壓劑。無 MRSA 或綠膿桿菌危險因子，流感 PCR 陰性。',
+ load:{v:{pao2:'70',fio2:'0.5',rr:'32',bun:'28',wbc:'9000',plt:'210000',temp:'38.6',spo2:'92'},c:{}},
+ steps:[['判定','RR ≥30、P/F 140（≤250）、BUN ≥20，共 3 項次要條件，符合重症。單葉浸潤與清醒都不影響判定。'],
+  ['檢查','抗生素前送血液培養、痰液培養與革蘭氏染色；尿液肺炎鏈球菌與退伍軍人菌抗原。'],
+  ['抗生素','無抗藥菌風險：β-lactam＋macrolide，例如 ceftriaxone 2 g q24h＋azithromycin 500 mg q24h。'],
+  ['類固醇','沒有休克，ERS 2023 不適用；SCCM 2024 與 ATS 2025 適用。若決定使用，CAPE COD 處方是在符合重症後 24 小時內開始。'],
+  ['呼吸支持','ROX 5.75（≥4.88）目前低風險，但數值會變，依 2、6、12 小時持續評估。']],
+ trap:['看起來「只有一葉、人還清醒」就低估嚴重度；判定是算項數，不是看整體印象。','P/F 要用實際 FiO₂ 計算，不要用 SpO₂ 目測。'],
+ src:'ATS/IDSA 2019 Table 1、Q9、Q12；ERS 2023；Dequin 2023；Roca 2019'},
+{id:'c2',t:'差一項：非重症',s:'有近期住院，但不必經驗性加藥',tag:'非重症・送培養',rox:false,
+ who:'66 歲女性，雙側多葉浸潤。鼻導管下 FiO₂ 約 0.25、PaO₂ 70 mmHg，RR 26，BUN 24。60 天前因尿路感染住院並接受靜脈抗生素，過去呼吸道檢體沒有培養出 MRSA 或綠膿桿菌。',
+ load:{v:{pao2:'70',fio2:'0.25',rr:'26',bun:'24',wbc:'11000',plt:'180000',temp:'38.1',spo2:'94'},c:{mi_multi:true,mrsa_hosp:true,psa_hosp:true}},
+ steps:[['判定','多葉浸潤與 BUN ≥20 共 2 項次要條件；P/F 280 未達 ≤250，未達重症。'],
+  ['抗藥菌','非重症且只有「近期住院＋靜脈抗生素」：先送培養，MRSA 或綠膿桿菌培養陽性才加涵蓋；有快速 MRSA 鼻腔 PCR 時，陰性不加、陽性才加。'],
+  ['抗生素','起始用標準非重症住院處方（β-lactam＋macrolide 或呼吸道 fluoroquinolone）。工具此時列出的抗綠膿桿菌藥物只是參考，並非本例的起始建議。'],
+  ['類固醇','非重症不使用。'],
+  ['重新評估','只差一項，病情變化時隨時重算；RR 或 P/F 惡化就可能跨過門檻。']],
+ trap:['把「近期住院＋靜脈抗生素」當成一律加 vancomycin 與抗綠膿桿菌藥物；重症與非重症的做法不同。','過去呼吸道檢體曾培養出，和近期住院不是同一個風險層級。'],
+ src:'ATS/IDSA 2019 Table 4、Q11、Q12'},
+{id:'c3',t:'休克＋綠膿桿菌病史',s:'主要條件，四份指引都適用類固醇',tag:'敗血性休克・PsA',rox:false,
+ who:'70 歲男性，支氣管擴張症，去年痰液培養出綠膿桿菌。到院 MAP 低，輸液後仍需 norepinephrine。FiO₂ 0.6 時 PaO₂ 75 mmHg。多葉浸潤，BUN 42，WBC 3,200/µL（感染造成），血小板 88,000/µL，核心體溫 35.6 °C。',
+ load:{v:{pao2:'75',fio2:'0.6',rr:'28',bun:'42',wbc:'3200',plt:'88000',temp:'35.6',spo2:'94'},c:{ma_shock:true,mi_multi:true,psa_prior:true}},
+ steps:[['判定','需升壓劑的敗血性休克，1 項主要條件即為重症；另有 6 項次要條件。'],
+  ['抗生素','抗綠膿桿菌 β-lactam 取代基本 β-lactam，例如 piperacillin-tazobactam 4.5 g q6h，再合併 macrolide；送培養。'],
+  ['類固醇','休克且非流感，四份指引在工具中都適用。ATS/IDSA 2019 指向 SSC 的難治性休克建議；ERS 2023 建議有休克時使用。'],
+  ['看懂證據','CAPE COD 排除收案時已用升壓劑的敗血性休克，所以本例的依據主要不是 CAPE COD。'],
+  ['降階','培養陰性且病情改善，於 48 小時降階。達臨床穩定後總療程至少 5 天。']],
+ trap:['綠膿桿菌涵蓋是「取代」基本 β-lactam，不是再疊加 ceftriaxone。','把 CAPE COD 的結果直接套到已用升壓劑的病人。'],
+ src:'ATS/IDSA 2019 Table 4、Q11、Q12；ERS 2023；ClinicalTrials.gov NCT02517489'},
+{id:'c4',t:'流感＋插管＋MRSA 風險',s:'抗病毒、抗細菌都給，類固醇不給',tag:'流感・呼吸器',rox:false,
+ who:'55 歲女性，發病第 6 天，流感核酸檢測陽性，到院後因呼吸衰竭插管。FiO₂ 0.7 時 PaO₂ 68 mmHg，多葉浸潤，WBC 3,000/µL（感染造成）。75 天前住院接受靜脈抗生素，當地驗證該風險適用於 MRSA。',
+ load:{v:{pao2:'68',fio2:'0.7',rr:'22',bun:'18',wbc:'3000',plt:'120000',temp:'38.9',spo2:'93'},c:{ma_mv:true,mi_multi:true,flu:true,mrsa_hosp:true}},
+ steps:[['判定','需侵襲性呼吸器，1 項主要條件即為重症。'],
+  ['抗病毒','住院 CAP 且流感陽性就給 oseltamivir，與發病多久無關；發病第 6 天仍要給。'],
+  ['抗細菌','流感陽性仍先給標準抗細菌治療：β-lactam＋macrolide。重症且有 MRSA 風險，加 vancomycin 或 linezolid，並送培養與鼻腔 PCR。'],
+  ['類固醇','四份指引在本例都不適用：ATS/IDSA 2019 不建議用於重症流感肺炎，SCCM 限細菌性 CAP，ATS 2025 排除流感。'],
+  ['48 小時','培養與鼻腔 PCR 陰性則停 MRSA 涵蓋。若沒有細菌共感染證據且早期達臨床穩定，ATS/IDSA 2019 指出可考慮 48–72 小時停抗細菌藥物。']],
+ trap:['「超過 48 小時就不用抗病毒」是錯的。','看到流感陽性就不給抗細菌藥物；細菌共感染會增加死亡風險，起始仍要給。'],
+ src:'ATS/IDSA 2019 Q4、Q11–Q14；SCCM 2024；ATS 2025（僅讀摘要與二手摘要）'},
+{id:'c5',t:'β-lactam 過敏＋未控制糖尿病',s:'替代處方；類固醇各指引分歧',tag:'過敏・類固醇排除',rox:false,
+ who:'61 歲男性，曾對 penicillin 發生嚴重過敏反應，2 年前痰液培養出綠膿桿菌，血糖控制差。FiO₂ 0.4 時 PaO₂ 65 mmHg，RR 31，BUN 30，多葉浸潤，無休克，流感陰性。',
+ load:{v:{pao2:'65',fio2:'0.4',rr:'31',bun:'30',wbc:'14000',plt:'150000',temp:'38.4',spo2:'91'},c:{mi_multi:true,blall:true,psa_prior:true,st_dm:true}},
+ steps:[['判定','RR、P/F 163、BUN、多葉浸潤共 4 項次要條件，符合重症。'],
+  ['抗生素','β-lactam 嚴重過敏：呼吸道 fluoroquinolone（如 levofloxacin 750 mg q24h）；綠膿桿菌風險加 aztreonam 2 g q8h。依過敏史與感染科討論。'],
+  ['類固醇','工具中 ATS 2025 因未控制糖尿病排除，SCCM 2024 仍標示適用，ERS 2023 因無休克不適用。ERS 的註記也不適用於未控制糖尿病。'],
+  ['決策','指引不一致時，把高血糖風險與可能的好處寫清楚，由團隊決定，不要只看單一欄位。CAPE COD 中類固醇組第一週胰島素劑量較高。'],
+  ['降階','培養陰性且改善時，48 小時停抗綠膿桿菌涵蓋。']],
+ trap:['過敏史未釐清就全面避開所有 β-lactam；請確認反應類型與嚴重度。','把「SCCM 適用」解讀成沒有任何風險。'],
+ src:'ATS/IDSA 2019 Q11；ERS 2023；SCCM 2024；Dequin 2023'},
+{id:'c6',t:'吸入、肺膿瘍、HFNO 失敗',s:'何時才涵蓋厭氧菌；何時別再等',tag:'肺膿瘍・ROX',rox:true,
+ who:'58 歲男性，酒精使用疾患，嘔吐後意識混亂，CT 見空洞性肺膿瘍。HFNO 6 小時後 FiO₂ 0.8，PaO₂ 58 mmHg，SpO₂ 88%，RR 34，呼吸費力。無抗藥菌危險因子，流感陰性。',
+ load:{v:{pao2:'58',fio2:'0.8',rr:'34',bun:'22',wbc:'16000',plt:'240000',temp:'38.2',spo2:'88'},c:{mi_conf:true,abscess:true}},
+ steps:[['判定','RR、P/F 72、BUN、意識混亂共 4 項次要條件，符合重症。一旦插管就同時符合主要條件。'],
+  ['ROX','(88÷0.8)÷34 = 3.24，HFNO 6 小時的失敗門檻是 <3.47，加上呼吸費力，不要再延後插管。'],
+  ['抗生素','單純疑似吸入不需加抗厭氧菌；本例有肺膿瘍，才需涵蓋。可從工具清單選 ampicillin-sulbactam，再合併 macrolide，並與感染科討論。'],
+  ['類固醇','工具依「重症、非流感、無禁忌」標示 SCCM 2024 與 ATS 2025 適用。但 CAPE COD 排除有胃內容物吸入病史者，使用時要知道外推限制。'],
+  ['感染源','一併評估膿胸與是否需要引流，這屬於臨床處置判斷，不在本工具的計算內。']],
+ trap:['所有吸入性肺炎都加 metronidazole 或 clindamycin。','ROX 只是輔助；數值尚可但呼吸費力、意識變差，一樣要評估插管。'],
+ src:'ATS/IDSA 2019 Q10；ERS 2023；Roca 2019；ClinicalTrials.gov NCT02517489'}
+];
+/*CASES-END*/
+/*QUIZ-START*/
+var SQUIZ=[
+{l:'basic',q:'下列何者是重症 CAP 的主要條件？',o:['呼吸衰竭需要侵襲性呼吸器','PaO₂/FiO₂ ≤250','多葉浸潤','BUN ≥20 mg/dL'],a:0,x:'主要條件只有兩項：需升壓劑的敗血性休克、需侵襲性呼吸器。其餘三項都是次要條件。',src:'ATS/IDSA 2019 Table 1'},
+{l:'basic',q:'沒有主要條件時，至少要幾項次要條件才符合重症 CAP？',o:['1 項','2 項','3 項','4 項'],a:2,x:'1 項主要或 ≥3 項次要條件。',src:'ATS/IDSA 2019 Table 1'},
+{l:'basic',q:'PaO₂ 75 mmHg、FiO₂ 0.3，這項次要條件如何判讀？',o:['P/F 250，不符合','P/F 250，符合','P/F 225，符合','P/F 300，不符合'],a:1,x:'75÷0.3 = 250。標準是 ≤250，剛好等於也算符合。',src:'ATS/IDSA 2019 Table 1'},
+{l:'basic',q:'下列何者不是 ATS/IDSA 重症 CAP 的次要條件？',o:['血小板 <100,000/µL','核心體溫 <36 °C','意識混亂或定向感障礙','年齡 ≥65 歲'],a:3,x:'年齡是 CURB-65 的項目，不在這 9 項次要條件內。',src:'ATS/IDSA 2019 Table 1'},
+{l:'basic',q:'重症 CAP、沒有 MRSA 或綠膿桿菌危險因子，下列何者是建議的經驗性處方？',o:['Ceftriaxone＋azithromycin','Ceftriaxone 單用','Levofloxacin 單用','Piperacillin-tazobactam＋vancomycin'],a:0,x:'重症用合併治療：β-lactam＋macrolide（強建議，中度證據）或 β-lactam＋呼吸道 fluoroquinolone（強建議，低證據）。沒有風險因子不需經驗性涵蓋抗藥菌。',src:'ATS/IDSA 2019 Q9'},
+{l:'basic',q:'臨床與影像都符合 CAP，但 procalcitonin 很低。下一步？',o:['暫緩抗生素，24 小時後複驗','只給抗病毒藥物','仍開始經驗性抗生素','只給 macrolide'],a:2,x:'不論起始 procalcitonin 高低都要開始抗生素（強建議，中度證據）。它的角色是協助縮短療程。',src:'ATS/IDSA 2019 Q5；ERS 2023'},
+{l:'basic',q:'疑似吸入性肺炎，沒有肺膿瘍或膿胸，抗生素怎麼選？',o:['加 metronidazole','標準 CAP 處方，不另加抗厭氧菌','一律改 carbapenem','加 clindamycin'],a:1,x:'只有懷疑肺膿瘍或膿胸才需要涵蓋厭氧菌。',src:'ATS/IDSA 2019 Q10；ERS 2023 良好臨床實務'},
+{l:'basic',q:'住院 CAP、流感陽性，發病已 5 天，oseltamivir 怎麼處理？',o:['超過 48 小時不給','只有插管才給','只有 H1N1 才給','與發病多久無關，應給'],a:3,x:'住院者不論診斷前病程多久都建議給（強建議，中度證據）。',src:'ATS/IDSA 2019 Q13'},
+{l:'basic',q:'重症 CAP 改善中，抗生素療程的原則是？',o:['固定 3 天','固定 7 天','達臨床穩定且總療程至少 5 天','固定 14 天'],a:2,x:'以驗證過的臨床穩定指標決定，且不少於 5 天。ATS 2025 對重症也維持 ≥5 天。',src:'ATS/IDSA 2019 Q15；ATS 2025（二手摘要）'},
+{l:'basic',q:'ROX 指數的計算方式是？',o:['呼吸速率 ÷（SpO₂／FiO₂）','SpO₂ × FiO₂ ÷ 呼吸速率','PaO₂／FiO₂ ÷ 呼吸速率','（SpO₂／FiO₂）÷ 呼吸速率'],a:3,x:'ROX 用的是 SpO₂，不是 PaO₂，適用於使用 HFNC 的病人。',src:'Roca 2019'},
+{l:'adv',q:'化療後的病人 WBC 2,800/µL，RR 31，多葉浸潤，BUN 18，P/F 300，無其他異常。次要條件應算幾項？',o:['2 項，未達重症','3 項，符合重症','4 項，符合重症','1 項，未達重症'],a:0,x:'白血球減少僅限感染造成，化療引起的不算，所以只有 RR 與多葉浸潤。注意：工具輸入 WBC 後會自動計入，這種情況要自行扣除。另外，免疫低下者不在這些指引的主要適用範圍。',src:'ATS/IDSA 2019 Table 1 註'},
+{l:'adv',q:'重症 CAP，因近期住院＋靜脈抗生素經驗性使用 vancomycin。48 小時後鼻腔 PCR 與培養都陰性，病情改善。下一步？',o:['vancomycin 用滿 7 天','停 MRSA 涵蓋','換成 linezolid','加上抗綠膿桿菌藥物'],a:1,x:'送培養與鼻腔 PCR 的目的就是讓陰性時能降階。',src:'ATS/IDSA 2019 Q11'},
+{l:'adv',q:'重症 CAP、非流感、沒有休克、沒有類固醇禁忌。哪一組指引在工具中會標示適用類固醇？',o:['只有 ATS/IDSA 2019','ATS/IDSA 2019 與 ERS 2023','SCCM 2024 與 ATS 2025','四份指引都適用'],a:2,x:'ERS 2023 的建議以有休克為條件；ATS/IDSA 2019 不建議常規使用。SCCM 2024 為強建議，ATS 2025 為條件式建議。',src:'ATS/IDSA 2019 Q12；ERS 2023；SCCM 2024；ATS 2025'},
+{l:'adv',q:'關於 CAPE COD 試驗，下列何者正確？',o:['納入流感肺炎','處方為固定 7 天 hydrocortisone 50 mg q6h','主要終點是 90 天死亡率','排除收案時已用升壓劑的敗血性休克'],a:3,x:'28 天死亡率 6.2% 對 11.9%。處方是 200 mg/天，用 4 或 7 天後減量，總療程 8 或 14 天。流感 PCR 陽性與已用升壓劑的休克都被排除。',src:'Dequin 2023；ClinicalTrials.gov NCT02517489'},
+{l:'adv',q:'REMAP-CAP 類固醇分組（固定 7 天 hydrocortisone）的結果是？',o:['90 天死亡率顯著下降','證實 hydrocortisone 有害','因無效性停止收案，不太可能大幅降低死亡','只收流感肺炎'],a:2,x:'90 天死亡率 15% 對 9.8%，因無效性停止收案；較小的好處或可能的傷害都無法排除。與 CAPE COD 的結果並不一致。',src:'REMAP-CAP, Intensive Care Med 2025'},
+{l:'adv',q:'肺炎病人使用 HFNC 6 小時，ROX 3.2，呼吸費力。最合適的判斷是？',o:['低於 6 小時門檻 3.47，評估插管，不要延誤','高於 2.85，可繼續觀察到 24 小時','改回一般鼻導管','等 12 小時再判讀'],a:0,x:'2、6、12 小時的失敗門檻分別為 <2.85、<3.47、<3.85。ERS 2023 也提醒持續密切監測。',src:'Roca 2019；ERS 2023'},
+{l:'adv',q:'HFNC 病人 SpO₂ 90%、FiO₂ 0.6、RR 30，ROX 與判讀為何？',o:['3.0，高風險','5.0，≥4.88 屬低插管風險','150，無法判讀','0.2，高風險'],a:1,x:'(90÷0.6)÷30 = 5.0。≥4.88 與較低的插管風險相關，仍要追蹤趨勢。',src:'Roca 2019'},
+{l:'adv',q:'依 ERS 2023，什麼時候建議把下呼吸道檢體送多重 PCR？',o:['所有疑似 CAP 的門診病人','所有病人開始抗生素後第 7 天','只有流感季節','正在考慮或已使用非標準 sCAP 抗生素時'],a:3,x:'條件式建議，極低證據，並以院內有此技術為前提。',src:'ERS 2023'},
+{l:'adv',q:'重症 CAP、流感陽性、有呼吸衰竭，沒有 MRSA 或綠膿桿菌風險。起始治療怎麼組合？',o:['Oseltamivir＋β-lactam＋macrolide','Oseltamivir 單用','Oseltamivir＋hydrocortisone','β-lactam＋macrolide，不給抗病毒'],a:0,x:'流感陽性仍先給標準抗細菌治療（強建議，低證據）並給抗病毒。沒有細菌共感染證據且早期穩定時，可考慮 48–72 小時停抗細菌藥物。',src:'ATS/IDSA 2019 Q12–Q14'},
+{l:'adv',q:'關於 β-lactam 的合併藥物，ATS/IDSA 2019 與 ERS 2023 的差異是？',o:['兩者都只接受 fluoroquinolone','ATS/IDSA 兩者皆可（macrolide 證據較高）；ERS 建議 macrolide','ATS/IDSA 只接受 macrolide；ERS 只接受 fluoroquinolone','兩者都建議三藥合併'],a:1,x:'ERS 2023 建議加 macrolide 而非 fluoroquinolone（條件式，極低證據），並提到 macrolide 療程 3–5 天是合理的。',src:'ATS/IDSA 2019 Q9；ERS 2023'}
+];
+/*QUIZ-END*/
+/*MAP-START*/
+var SMAP={
+ dx:[
+  {t:'重症判定',s:'1 項主要或 ≥3 項次要',l:[
+   ['主要','需升壓劑的敗血性休克；需侵襲性呼吸器'],
+   ['呼吸','RR ≥30；P/F ≤250；多葉浸潤'],
+   ['器官','意識混亂；BUN ≥20；低血壓需積極輸液'],
+   ['血液與體溫','WBC <4,000（僅限感染造成）；血小板 <100,000；核心體溫 <36 °C']]},
+  {t:'微生物檢查',s:'抗生素前送',l:[
+   ['培養','血液培養；痰液或氣管內抽吸培養與革蘭氏染色'],
+   ['尿抗原','肺炎鏈球菌、退伍軍人菌（重症建議）'],
+   ['流感','流行期間用核酸檢測，優於抗原快篩'],
+   ['多重 PCR','考慮非標準抗生素時（ERS 2023，條件式）'],
+   ['MRSA 鼻腔 PCR','陰性可協助停藥']]},
+  {t:'抗藥菌風險',s:'依當地驗證的危險因子',l:[
+   ['過去呼吸道檢體','曾培養出 MRSA 或綠膿桿菌'],
+   ['近期住院','90 天內住院＋靜脈抗生素，且符合當地驗證的風險'],
+   ['HCAP','不再作為經驗性廣效治療的依據'],
+   ['非重症','只有近期住院時：先送培養，陽性才加']]},
+  {t:'生物標記',s:'不決定要不要開始',l:[
+   ['Procalcitonin','不可用來決定是否開始抗生素（ATS/IDSA 2019）'],
+   ['縮短療程','可搭配臨床評估（ERS 2023，條件式）'],
+   ['限制','已達穩定且療程 5–7 天時可能沒有幫助']]},
+  {t:'呼吸評估',s:'ROX 用於 HFNC',l:[
+   ['公式','（SpO₂／FiO₂）÷ RR'],
+   ['低風險','≥4.88'],
+   ['預測失敗','2 小時 <2.85；6 小時 <3.47；12 小時 <3.85']]}],
+ tx:[
+  {t:'標準抗生素',s:'合併治療',l:[
+   ['β-lactam','Ceftriaxone、cefotaxime、ampicillin-sulbactam、ceftaroline'],
+   ['合併藥物','Macrolide（強，中度）或呼吸道 fluoroquinolone（強，低）'],
+   ['ERS 2023','選 macrolide，不選 fluoroquinolone（條件式）']]},
+  {t:'抗藥菌涵蓋',s:'重症依風險經驗性加上',l:[
+   ['MRSA','Vancomycin 15 mg/kg q12h 或 linezolid 600 mg q12h'],
+   ['綠膿桿菌','Pip-tazo、cefepime、ceftazidime、meropenem、imipenem、aztreonam'],
+   ['降階','培養陰性且改善，48 小時停']]},
+  {t:'特殊情況',s:'流感、過敏、吸入',l:[
+   ['流感','Oseltamivir，與病程長短無關；起始仍給抗細菌藥物'],
+   ['β-lactam 嚴重過敏','呼吸道 fluoroquinolone；綠膿桿菌風險加 aztreonam'],
+   ['吸入','標準處方；肺膿瘍或膿胸才涵蓋厭氧菌']]},
+  {t:'類固醇',s:'指引不一致',l:[
+   ['ATS/IDSA 2019','不常規使用；難治性休克依 SSC'],
+   ['ERS 2023','有休克時（條件式，低證據）；註記不適用病毒性 sCAP、未控制糖尿病'],
+   ['SCCM 2024','住院重症 CAP（強建議）'],
+   ['ATS 2025','重症（條件式）；非重症不用；流感除外'],
+   ['試驗','CAPE COD 28 天死亡率下降；REMAP-CAP 固定 7 天因無效性停止']]},
+  {t:'呼吸支持',s:'不要延誤插管',l:[
+   ['HFNO','未需立即插管者，優於傳統氧氣（條件式，極低）'],
+   ['NIV','部分持續低血氧者可考慮（條件式，低）'],
+   ['失敗','密切監測，及時插管']]},
+  {t:'療程與穩定',s:'至少 5 天',l:[
+   ['穩定 7 項','體溫 ≤37.8、HR ≤100、RR ≤24、SBP ≥90、SpO₂ ≥90% 或 PaO₂ ≥60、可口服、意識正常'],
+   ['重症療程','達穩定且至少 5 天'],
+   ['追蹤影像','不建議常規追蹤胸部影像（ATS/IDSA 2019）']]}]
+};
+/*MAP-END*/
+</script>
+
+<script>
 (function(){
 const KEY='scap-v1';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const n=v=>{if(v===''||v==null)return NaN;const x=parseFloat(v);return isFinite(x)?x:NaN;};
 const newBed=()=>({v:{},c:{},note:''});
 const defS=()=>({beds:Array.from({length:12},(_,i)=>String(i+1)),bed:'1',data:{}});
 let S;
@@ -183,8 +457,11 @@ if(!Array.isArray(S.beds)||!S.beds.length)S.beds=defS().beds;
 if(!S.beds.includes(S.bed))S.bed=S.beds[0];
 if(!S.data||typeof S.data!=='object')S.data={};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
-const B_=()=>S.data[S.bed]||(S.data[S.bed]=newBed());
+let DEMO=null; // 示範病例資料只放記憶體，不寫入床位
+const B_=()=>DEMO||S.data[S.bed]||(S.data[S.bed]=newBed());
 
+/*ENGINE-START*/
+const n=v=>{if(v===''||v==null)return NaN;const x=parseFloat(v);return isFinite(x)?x:NaN;};
 /* ---------- 重症判定 ---------- */
 const MAJOR=[['shock','敗血性休克，需要升壓劑'],['mv','呼吸衰竭，需要侵襲性呼吸器']];
 // 次要條件：k, 名稱, 說明, 自動判斷函式（無輸入時回傳 null）
@@ -241,11 +518,13 @@ function steroid(B){
     ['ATS 2025','住院的重症 CAP 建議使用全身性類固醇（條件式，低證據）；流感肺炎除外，另排除麴菌感染、未控制的糖尿病、近期腸胃道出血。',s.severe&&!flu&&!contra]];
 }
 
+/*ENGINE-END*/
+
 /* ---------- 渲染 ---------- */
 function renderBeds(){
   $('#beds').innerHTML=S.beds.map(b=>{const B=S.data[b];let cls='',lab='—';
     if(B&&(Object.keys(B.c).length||Object.keys(B.v).length)){const s=sev(B);cls=s.severe?'s-crit':'s-ok';lab=s.severe?'重症':'非重症';}
-    return `<button type="button" class="bedbtn ${cls}" data-bed="${esc(b)}" aria-current="${b===S.bed}">${esc(b)}<small>${lab}</small></button>`;}).join('');
+    return `<button type="button" class="bedbtn ${cls}" data-bed="${esc(b)}" aria-current="${!DEMO&&b===S.bed}">${esc(b)}<small>${lab}</small></button>`;}).join('');
 }
 function fld(B,k,l,u,ph){return `<div class="fld"><label for="v-${k}">${l} <span class="unit">${u}</span></label><input id="v-${k}" data-v="${k}" inputmode="decimal" value="${esc(B.v[k]??'')}" placeholder="${ph||''}"></div>`;}
 function ck(B,k,l,sub,cls){const id='c-'+k;return `<label class="ck ${cls||''}" for="${id}"><input type="checkbox" id="${id}" data-c="${k}" ${B.c[k]?'checked':''}><span>${l}${sub?`<small>${sub}</small>`:''}</span></label>`;}
@@ -254,6 +533,7 @@ function render(){
   if(a&&a.id){fk='#'+CSS.escape(a.id);try{sel=[a.selectionStart,a.selectionEnd];}catch(e){}}
   const B=B_(),s=sev(B),rg=regimen(B),r=pf(B);
   renderBeds();
+  $('#demo').hidden=!DEMO;$('#demo-t').textContent=DEMO?'示範資料：'+DEMO.title+'（虛構，不會存入床位）':'';
   $('#dx').innerHTML=`<span class="dxchip ${s.severe?'crit':'ok'}">${s.severe?'重症 CAP':'未達重症'}</span><span class="dxchip">主要 ${s.maj}／次要 ${s.min}</span>`;
   let h=`<section class="panel"><div class="sec"><h2><span class="n">1</span>重症判定</h2><span>ATS/IDSA 2019（沿用 IDSA/ATS 2007）：1 項主要或 ≥3 項次要</span></div>
     <div class="row">${fld(B,'pao2','PaO₂','mmHg','60')}${fld(B,'fio2','FiO₂','0.21–1 或 %','0.4')}<div class="fld"><label>PaO₂/FiO₂</label><div class="num" style="padding:6px 0;font-weight:700">${isFinite(r)?Math.round(r):'—'}</div></div></div>
@@ -304,19 +584,19 @@ function render(){
   <section class="panel"><label class="label" for="note">備註</label><textarea id="note" data-note style="width:100%;min-height:64px;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px">${esc(B.note)}</textarea></section>`;
   $('#main').innerHTML=h;
 
-  $('#side').innerHTML=`<section class="panel"><h2>床 ${esc(S.bed)} 摘要</h2><div class="sum">
+  $('#side').innerHTML=`<section class="panel"><h2>${DEMO?'示範病例':'床 '+esc(S.bed)} 摘要</h2><div class="sum">
       <div><b>${s.severe?'重症 CAP':'未達重症'}</b>（主要 ${s.maj}、次要 ${s.min}）</div>
       <div>抗藥菌：${rg.mrsa?'MRSA ':''}${rg.psa?'PsA':''}${!rg.mrsa&&!rg.psa?'無風險因子':''}</div>
       <div>類固醇：${st.filter(x=>x[2]).map(x=>x[0]).join('、')||'各指引目前不適用'}</div></div>
       <div class="row" style="align-items:center"><button type="button" class="btn small" data-act="copy">複製摘要</button><span class="toast" id="toast" aria-live="polite"></span></div>
       <textarea class="buf" id="buf" hidden readonly aria-label="摘要"></textarea></section>
-    <section class="panel"><div class="row" style="align-items:center"><button type="button" class="btn small danger" data-act="clearAsk">清除此床</button><span class="confirm" id="clr" hidden>確定清除床 ${esc(S.bed)}？<button type="button" class="btn small danger" data-act="clearYes">清除</button><button type="button" class="btn small" data-act="clearNo">取消</button></span></div>
+    <section class="panel" ${DEMO?'hidden':''}><div class="row" style="align-items:center"><button type="button" class="btn small danger" data-act="clearAsk">清除此床</button><span class="confirm" id="clr" hidden>確定清除床 ${esc(S.bed)}？<button type="button" class="btn small danger" data-act="clearYes">清除</button><button type="button" class="btn small" data-act="clearNo">取消</button></span></div>
       <details><summary style="cursor:pointer;font-weight:700">床號設定</summary><div class="fld" style="margin-top:8px"><label for="set-beds">床號（逗號或空白分隔）</label><input id="set-beds" value="${esc(S.beds.join(', '))}"></div><button type="button" class="btn small primary" style="margin-top:8px" data-act="saveBeds">儲存</button></details></section>`;
   const el=fk&&$(fk);if(el){el.focus({preventScroll:true});if(sel&&sel[0]!=null)try{el.setSelectionRange(sel[0],sel[1]);}catch(e){}}
 }
 function summary(){
   const B=B_(),s=sev(B),rg=regimen(B),st=steroid(B);
-  const L=[`【床 ${S.bed}】社區型肺炎評估`,`${s.severe?'符合重症 CAP':'未達重症'}：主要 ${s.maj} 項（${MAJOR.filter(([k])=>B.c['ma_'+k]).map(x=>x[1]).join('、')||'無'}）、次要 ${s.min} 項（${MINOR.filter(m=>minorOn(B,m)).map(m=>m[1]).join('、')||'無'}）`];
+  const L=[`【${DEMO?'示範病例（虛構）':'床 '+S.bed}】社區型肺炎評估`,`${s.severe?'符合重症 CAP':'未達重症'}：主要 ${s.maj} 項（${MAJOR.filter(([k])=>B.c['ma_'+k]).map(x=>x[1]).join('、')||'無'}）、次要 ${s.min} 項（${MINOR.filter(m=>minorOn(B,m)).map(m=>m[1]).join('、')||'無'}）`];
   L.push('經驗性抗生素：'+rg.out.map(d=>d.nm.replace('＋ ','')+'（'+d.opts[0].replace(/<[^>]+>/g,'')+' 等）').join('＋'));
   L.push('類固醇：'+(st.filter(x=>x[2]).map(x=>x[0]).join('、')||'目前各指引不適用'));
   const dx=[['dx_bc','血培養'],['dx_sp','痰培養'],['dx_uag','尿抗原'],['dx_flu','流感檢測'],['dx_pcr','多重 PCR'],['dx_nares','MRSA 鼻腔 PCR']].filter(([k])=>B.c[k]).map(x=>x[1]);
@@ -325,7 +605,7 @@ function summary(){
   return L.join('\n');
 }
 document.addEventListener('click',e=>{
-  const bb=e.target.closest('[data-bed]');if(bb){S.bed=bb.dataset.bed;save();render();return;}
+  const bb=e.target.closest('[data-bed]');if(bb){DEMO=null;S.bed=bb.dataset.bed;save();render();return;}
   const a=e.target.closest('[data-act]');if(!a)return;
   switch(a.dataset.act){
     case 'copy':{const text=summary(),toast=$('#toast'),buf=$('#buf');
@@ -335,6 +615,7 @@ document.addEventListener('click',e=>{
     case 'clearAsk':$('#clr').hidden=false;a.hidden=true;return;
     case 'clearNo':$('#clr').hidden=true;$('[data-act="clearAsk"]').hidden=false;return;
     case 'clearYes':S.data[S.bed]=newBed();break;
+    case 'demoExit':DEMO=null;break;
     case 'saveBeds':{const b=$('#set-beds').value.split(/[,，\s]+/).map(v=>v.trim()).filter(Boolean);if(b.length){S.beds=[...new Set(b)];if(!S.beds.includes(S.bed))S.bed=S.beds[0];}break;}
     default:return;
   }
@@ -344,7 +625,106 @@ document.addEventListener('change',e=>{const t=e.target;if(!t.matches('[data-c]'
 document.addEventListener('input',e=>{const t=e.target;
   if(t.matches('[data-v]')){B_().v[t.dataset.v]=t.value;save();render();}
   else if(t.matches('[data-note]')){B_().note=t.value;save();}});
-render();
+
+/* ---------- 分頁 ---------- */
+const TABS=['tool','cases','quiz','map'];
+function stripH(){document.documentElement.style.setProperty('--strip-h',$('.strip').offsetHeight+'px');}
+function showTab(t,push){
+  document.body.dataset.tab=t;
+  TABS.forEach(x=>{$('#'+x).hidden=x!==t;const b=$('#tab-'+x);b.setAttribute('aria-selected',x===t);b.tabIndex=x===t?0:-1;});
+  if(push)history.replaceState(null,'',t==='tool'?location.pathname+location.search:'#'+t);
+  stripH();drawMap();
+}
+$('.tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b){showTab(b.dataset.t,true);window.scrollTo(0,0);}});
+$('.tabs').addEventListener('keydown',e=>{
+  const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;
+  const i=TABS.indexOf(document.body.dataset.tab),t=TABS[(i+d+TABS.length)%TABS.length];
+  showTab(t,true);$('#tab-'+t).focus();e.preventDefault();
+});
+addEventListener('hashchange',()=>{const t=location.hash.slice(1);showTab(TABS.includes(t)?t:'tool');window.scrollTo(0,0);});
+
+/* ---------- 示範病例 ---------- */
+let caseId=SCASES[0].id;
+$('#c-pick').innerHTML=SCASES.map((c,i)=>`<button type="button" data-v="${c.id}" aria-pressed="false"><span>${i+1}. ${esc(c.t)}</span><small>${esc(c.s)}</small></button>`).join('');
+$('#c-pick').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;caseId=b.dataset.v;renderCase();});
+function caseBed(c){return {v:{...c.load.v},c:{...c.load.c},note:'',title:c.t};}
+function caseTiles(c){
+  const B=caseBed(c),s=sev(B),r=pf(B),rg=regimen(B),st=steroid(B).filter(x=>x[2]).map(x=>x[0]);
+  const sp=n(B.v.spo2),fi=n(B.v.fio2),rr=n(B.v.rr),rox=(sp/fi)/rr;
+  const T=[['判定',s.severe?'重症':'未達重症','',s.severe?'stop':'ok'],['主要／次要',s.maj+'／'+s.min,'項',''],['PaO₂/FiO₂',String(Math.round(r)),'',r<=250?'warn':'']];
+  if(c.rox)T.push(['ROX',rox.toFixed(2),'',rox>=4.88?'ok':'stop']);
+  T.push(['抗藥菌風險',[rg.mrsa?'MRSA':'',rg.psa?'PsA':''].filter(Boolean).join('＋')||'無','',rg.mrsa||rg.psa?'warn':'']);
+  T.push(['類固醇適用指引',String(st.length),'／4','']);
+  return T;
+}
+function renderCase(){
+  $$('#c-pick button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===caseId));
+  const i=SCASES.findIndex(c=>c.id===caseId),c=SCASES[i];
+  $('#c-body').innerHTML=`<div class="panel">
+    <div class="case-head"><h3>病例 ${i+1}：${esc(c.t)}</h3><span class="pill">${esc(c.tag)}</span></div>
+    <p>${esc(c.who)}</p>
+    <div class="tiles">${caseTiles(c).map(x=>`<div class="tile ${x[3]}"><div class="k">${esc(x[0])}</div><div class="v">${esc(x[1])}${x[2]?`<small>${esc(x[2])}</small>`:''}</div></div>`).join('')}</div>
+    <span class="label">逐步判斷</span>
+    <ol class="csteps">${c.steps.map(s=>`<li><b>${esc(s[0])}</b>${esc(s[1])}</li>`).join('')}</ol>
+    <span class="label">常見陷阱</span>
+    <div class="note warn"><ul class="traps">${c.trap.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>
+    <p class="small-src">依據：${esc(c.src)}</p>
+    <div><button class="btn primary" type="button" id="c-load">帶入決策工具</button></div>
+  </div>`;
+  $('#c-load').addEventListener('click',()=>{DEMO=caseBed(c);render();showTab('tool',true);window.scrollTo(0,0);});
+}
+
+/* ---------- 考題（不儲存） ---------- */
+const X={set:'all',a:{}};
+function renderExam(){
+  $$('#x-set button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===X.set));
+  const all=SQUIZ.map((q,i)=>({...q,i})),it=all.filter(q=>X.set==='all'||q.l===X.set);
+  const done=it.filter(q=>X.a[q.i]!=null),ok=done.filter(q=>X.a[q.i]===q.a);
+  const by=l=>{const s=all.filter(q=>q.l===l&&X.a[q.i]!=null);return s.filter(q=>X.a[q.i]===q.a).length+'／'+s.length;};
+  $('#x-score').innerHTML=`已答 <b class="num">${done.length}／${it.length}</b>，答對 <b class="num">${ok.length}</b> <span style="color:var(--muted)">基礎 ${by('basic')}・高階 ${by('adv')}</span>`;
+  $('#x-list').innerHTML=it.map(q=>{
+    const ans=X.a[q.i];
+    return `<article class="panel q" id="xq${q.i}">
+      <div class="q-top"><span class="label">第 ${q.i+1} 題</span><span class="pill ${q.l==='adv'?'warn':''}">${q.l==='adv'?'高階':'基礎'}</span></div>
+      <p>${esc(q.q)}</p>
+      <div class="opts">${q.o.map((o,k)=>`<button type="button" data-q="${q.i}" data-k="${k}" ${ans!=null?'disabled':''} class="${ans==null?'':k===q.a?'right':k===ans?'wrong':''}">${String.fromCharCode(65+k)}. ${esc(o)}</button>`).join('')}</div>
+      ${ans!=null?`<div class="note ${ans===q.a?'ok':'warn'} q-x"><b>${ans===q.a?'正確':'答案：'+String.fromCharCode(65+q.a)}</b><span>${esc(q.x)}</span><span class="small-src">依據：${esc(q.src)}</span></div>`:''}
+    </article>`;
+  }).join('');
+}
+$('#x-list').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-q]');if(!b)return;
+  const q=+b.dataset.q;X.a[q]=+b.dataset.k;renderExam();
+  const nb=$(`#xq${q} .opts button`);if(nb)nb.focus();
+});
+$('#x-set').addEventListener('click',e=>{const b=e.target.closest('button');if(b){X.set=b.dataset.v;renderExam();}});
+$('#x-reset').addEventListener('click',()=>{X.a={};renderExam();window.scrollTo(0,0);});
+
+/* ---------- 心智圖 ---------- */
+function mapBranch(b,side,i){
+  return `<div class="mm-branch ${side}"><button type="button" class="mm-head" aria-expanded="false" aria-controls="mm-${side}${i}"><span class="mm-t">${i+1}. ${esc(b.t)}</span><span class="mm-s">${esc(b.s)}</span></button><ul class="mm-leaves" id="mm-${side}${i}" hidden>${b.l.map(x=>`<li><b>${esc(x[0])}</b>　${esc(x[1])}</li>`).join('')}</ul></div>`;
+}
+$('#mm-dx').innerHTML='<h3 class="mm-col ev">評估與判讀</h3>'+SMAP.dx.map((b,i)=>mapBranch(b,'ev',i)).join('');
+$('#mm-tx').innerHTML='<h3 class="mm-col tx">處置與後續</h3>'+SMAP.tx.map((b,i)=>mapBranch(b,'tx',i)).join('');
+function drawMap(){
+  const w=$('#mm'),svg=$('#mm-links');
+  if(w.offsetParent===null||getComputedStyle(svg).display==='none')return;
+  const W=w.getBoundingClientRect(),C=$('#mm-center').getBoundingClientRect();
+  svg.setAttribute('viewBox',`0 0 ${W.width} ${W.height}`);
+  svg.innerHTML=$$('#mm .mm-branch').map(b=>{
+    const dx=b.classList.contains('ev'),r=b.querySelector('.mm-head').getBoundingClientRect();
+    const x1=(dx?C.left:C.right)-W.left,y1=C.top+C.height/2-W.top,x2=(dx?r.right:r.left)-W.left,y2=r.top+r.height/2-W.top,mx=(x1+x2)/2;
+    return `<path class="${dx?'ev':'tx'}" d="M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}"/>`;
+  }).join('');
+}
+const mmSet=(h,open)=>{h.setAttribute('aria-expanded',open);$('#'+h.getAttribute('aria-controls')).hidden=!open;};
+$('#mm').addEventListener('click',e=>{const h=e.target.closest('.mm-head');if(h){mmSet(h,h.getAttribute('aria-expanded')!=='true');drawMap();}});
+$('#mm-open').addEventListener('click',()=>{$$('#mm .mm-head').forEach(h=>mmSet(h,true));drawMap();});
+$('#mm-close').addEventListener('click',()=>{$$('#mm .mm-head').forEach(h=>mmSet(h,false));drawMap();});
+addEventListener('resize',()=>{stripH();drawMap();});
+
+renderCase();renderExam();render();
+showTab(TABS.includes(location.hash.slice(1))?location.hash.slice(1):'tool');
 })();
 </script>
 </body>

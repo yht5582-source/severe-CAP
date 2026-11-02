@@ -93,6 +93,8 @@ main{padding-block:18px 48px;display:grid;gap:18px}
 .ci input[type="checkbox"]{width:18px;height:18px;accent-color:var(--crit)}
 .ci .in{display:flex;gap:6px;align-items:center}
 .ci .in input{width:84px;border:1px solid var(--line);background:var(--surface-2);border-radius:7px;padding:5px 8px;font-family:var(--f-num)}
+.ci-opt{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:3px;cursor:pointer}
+.ci-opt input{width:15px;height:15px;flex:none;accent-color:var(--accent)}
 .ci .auto{font-size:11px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 4px}
 .verdict{border-radius:12px;padding:12px 16px;display:grid;gap:4px}
 .verdict.crit{background:var(--crit-soft)}.verdict.ok{background:var(--ok-soft)}.verdict.none{background:var(--surface-2);border:1px solid var(--line)}.verdict.warn{background:var(--warn-soft)}
@@ -374,7 +376,7 @@ var SQUIZ=[
 {l:'basic',q:'住院 CAP、流感陽性，發病已 5 天，oseltamivir 怎麼處理？',o:['超過 48 小時不給','只有插管才給','只有 H1N1 才給','與發病多久無關，應給'],a:3,x:'住院者不論診斷前病程多久都建議給（強建議，中度證據）。',src:'ATS/IDSA 2019 Q13'},
 {l:'basic',q:'重症 CAP 改善中，抗生素療程的原則是？',o:['固定 3 天','固定 7 天','達臨床穩定且總療程至少 5 天','固定 14 天'],a:2,x:'以驗證過的臨床穩定指標決定，且不少於 5 天。ATS 2025 對重症也維持 ≥5 天。',src:'ATS/IDSA 2019 Q15；ATS 2025（二手摘要）'},
 {l:'basic',q:'ROX 指數的計算方式是？',o:['呼吸速率 ÷（SpO₂／FiO₂）','SpO₂ × FiO₂ ÷ 呼吸速率','PaO₂／FiO₂ ÷ 呼吸速率','（SpO₂／FiO₂）÷ 呼吸速率'],a:3,x:'ROX 用的是 SpO₂，不是 PaO₂，適用於使用 HFNC 的病人。',src:'Roca 2019'},
-{l:'adv',q:'化療後的病人 WBC 2,800/µL，RR 31，多葉浸潤，BUN 18，P/F 300，無其他異常。次要條件應算幾項？',o:['2 項，未達重症','3 項，符合重症','4 項，符合重症','1 項，未達重症'],a:0,x:'白血球減少僅限感染造成，化療引起的不算，所以只有 RR 與多葉浸潤。注意：工具輸入 WBC 後會自動計入，這種情況要自行扣除。另外，免疫低下者不在這些指引的主要適用範圍。',src:'ATS/IDSA 2019 Table 1 註'},
+{l:'adv',q:'化療後的病人 WBC 2,800/µL，RR 31，多葉浸潤，BUN 18，P/F 300，無其他異常。次要條件應算幾項？',o:['2 項，未達重症','3 項，符合重症','4 項，符合重症','1 項，未達重症'],a:0,x:'白血球減少僅限感染造成，化療引起的不算，所以只有 RR 與多葉浸潤。在工具中請勾選「非感染造成」，就不會計入。另外，免疫低下者不在這些指引的主要適用範圍。',src:'ATS/IDSA 2019 Table 1 註'},
 {l:'adv',q:'重症 CAP，因近期住院＋靜脈抗生素經驗性使用 vancomycin。48 小時後鼻腔 PCR 與培養都陰性，病情改善。下一步？',o:['vancomycin 用滿 7 天','停 MRSA 涵蓋','換成 linezolid','加上抗綠膿桿菌藥物'],a:1,x:'送培養與鼻腔 PCR 的目的就是讓陰性時能降階。',src:'ATS/IDSA 2019 Q11'},
 {l:'adv',q:'重症 CAP、非流感、沒有休克、沒有類固醇禁忌。哪一組指引在工具中會標示適用類固醇？',o:['只有 ATS/IDSA 2019','ATS/IDSA 2019 與 ERS 2023','SCCM 2024 與 ATS 2025','四份指引都適用'],a:2,x:'ERS 2023 的建議以有休克為條件；ATS/IDSA 2019 不建議常規使用。SCCM 2024 為強建議，ATS 2025 為條件式建議。',src:'ATS/IDSA 2019 Q12；ERS 2023；SCCM 2024；ATS 2025'},
 {l:'adv',q:'關於 CAPE COD 試驗，下列何者正確？',o:['納入流感肺炎','處方為固定 7 天 hydrocortisone 50 mg q6h','主要終點是 90 天死亡率','排除收案時已用升壓劑的敗血性休克'],a:3,x:'28 天死亡率 6.2% 對 11.9%。處方是 200 mg/天，用 4 或 7 天後減量，總療程 8 或 14 天。流感 PCR 陽性與已用升壓劑的休克都被排除。',src:'Dequin 2023；ClinicalTrials.gov NCT02517489'},
@@ -471,7 +473,7 @@ const MINOR=[
  ['multi','多葉浸潤','',null,null],
  ['conf','意識混亂或定向感障礙','',null,null],
  ['bun','尿毒：BUN ≥20 mg/dL','',B=>{const x=n(B.v.bun);return isFinite(x)?x>=20:null;},'bun','mg/dL'],
- ['wbc','白血球減少 <4,000/µL','僅限感染造成者',B=>{const x=n(B.v.wbc);return isFinite(x)?x<4000:null;},'wbc','/µL'],
+ ['wbc','白血球減少 <4,000/µL','僅限感染造成者',B=>{const x=n(B.v.wbc);return isFinite(x)?x<4000&&!B.c.wbc_other:null;},'wbc','/µL'],
  ['plt','血小板減少 <100,000/µL','',B=>{const x=n(B.v.plt);return isFinite(x)?x<100000:null;},'plt','/µL'],
  ['temp','低體溫：核心體溫 <36 °C','',B=>{const x=n(B.v.temp);return isFinite(x)?x<36:null;},'temp','°C'],
  ['hypo','低血壓需要積極輸液復甦','',null,null]];
@@ -513,7 +515,7 @@ function steroid(B){
   const shock=c.ma_shock,flu=c.flu,contra=c.st_asp||c.st_dm||c.st_gi;
   return [
     ['ATS/IDSA 2019','不建議常規使用，流感肺炎也不建議；難治性敗血性休克依 Surviving Sepsis Campaign 處理。',shock&&!flu],
-    ['ERS/ESICM 2023','有休克時建議使用類固醇（條件式，低證據）。流感肺炎使用前請審慎評估。',shock],
+    ['ERS/ESICM 2023','有休克時建議使用類固醇（條件式，低證據）。不適用於病毒性 sCAP（流感、SARS、MERS）、未控制的糖尿病、已因其他原因使用類固醇者。',shock&&!flu&&!c.st_dm],
     ['SCCM 2024','住院的重症細菌性 CAP 建議使用類固醇（強建議，中度證據）。',s.severe&&!flu],
     ['ATS 2025','住院的重症 CAP 建議使用全身性類固醇（條件式，低證據）；流感肺炎除外，另排除麴菌感染、未控制的糖尿病、近期腸胃道出血。',s.severe&&!flu&&!contra]];
 }
@@ -542,7 +544,7 @@ function render(){
     <span class="sub">次要條件</span>
     <div class="crit">${MINOR.map((m,i)=>{const on=minorOn(B,m),auto=m[3]&&m[3](B)!==null;
       const ctrl=m[4]?`<span class="in"><input id="v-${m[4]}" data-v="${m[4]}" inputmode="decimal" value="${esc(B.v[m[4]]??'')}" aria-label="${m[1]}"><span class="unit">${m[5]}</span></span>`:m[0]==='pf'?`<span class="num">${isFinite(r)?Math.round(r):'—'}</span>`:`<input type="checkbox" id="c-mi_${m[0]}" data-c="mi_${m[0]}" ${B.c['mi_'+m[0]]?'checked':''} aria-label="${m[1]}">`;
-      return `<div class="ci ${on?'on':''}"><span class="mk">${i+1}</span><span class="t">${m[1]}${auto?' <span class="auto">自動</span>':''}${m[2]?`<small>${m[2]}</small>`:''}</span>${ctrl}</div>`;}).join('')}</div>
+      return `<div class="ci ${on?'on':''}"><span class="mk">${i+1}</span><span class="t">${m[1]}${auto?' <span class="auto">自動</span>':''}${m[2]?`<small>${m[2]}</small>`:''}${m[0]==='wbc'?`<label class="ci-opt" for="c-wbc_other"><input type="checkbox" id="c-wbc_other" data-c="wbc_other" ${B.c.wbc_other?'checked':''}>非感染造成（例如化療），不計入</label>`:''}</span>${ctrl}</div>`;}).join('')}</div>
     <div class="verdict ${s.severe?'crit':'none'}"><b>${s.severe?'符合重症 CAP':'未達重症標準'}</b><span>${s.maj?'符合主要條件：收治加護病房。':s.min>=3?`次要條件 ${s.min} 項（≥3）：建議收治加護病房或較高照護等級。`:`主要 0 項、次要 ${s.min} 項。持續監測，病況變化時重新評估。`}</span></div>
   </section>`;
 

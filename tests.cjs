@@ -36,6 +36,25 @@ t('P/F boundary 250 counts; FiO2 as percent works', () => {
   assert.strictEqual(sev(bed({ pao2: '75', fio2: '0.3' })).min, 1);
 });
 t('non-numeric minors use checkboxes', () => assert.strictEqual(sev(bed({}, { mi_multi: true, mi_conf: true })).min, 2));
+t('chemo leukopenia is excluded only when marked', () => {
+  assert.strictEqual(sev(bed({ wbc: '2800' })).min, 1);
+  assert.strictEqual(sev(bed({ wbc: '2800' }, { wbc_other: true })).min, 0);
+  assert.strictEqual(sev(bed({ wbc: '5000' }, { wbc_other: true })).min, 0);
+  assert.strictEqual(sev(bed({}, { wbc_other: true })).min, 0);
+});
+t('q11 scenario counts 2 minors, not severe', () => {
+  const s = sev(bed({ wbc: '2800', rr: '31', bun: '18', pao2: '90', fio2: '0.3' }, { mi_multi: true, wbc_other: true }));
+  assert.strictEqual(s.min, 2);
+  assert.strictEqual(s.severe, false);
+});
+t('ERS row: shock applies, not with flu or uncontrolled DM', () => {
+  const ers = c => rows(bed({}, c)).includes('ERS/ESICM 2023');
+  assert.strictEqual(ers({ ma_shock: true }), true);
+  assert.strictEqual(ers({ ma_shock: true, flu: true }), false);
+  assert.strictEqual(ers({ ma_shock: true, st_dm: true }), false);
+  assert.strictEqual(ers({ ma_shock: true, st_gi: true }), true);
+  assert.strictEqual(ers({ ma_mv: true }), false);
+});
 t('no risk: beta-lactam + macrolide', () => assert.deepStrictEqual(names(bed()), ['β-lactam', '＋ Macrolide']));
 t('macrolide contraindicated: fluoroquinolone', () => assert.ok(names(bed({}, { macroci: true })).includes('＋ 呼吸道 fluoroquinolone')));
 t('PsA: anti-pseudomonal first, no basic beta-lactam', () => {
